@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MediCore — Patients Preview</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="/styles.css">
+<style>
+body { background:#f5f6fa; margin:0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+.preview-wrap { max-width: 1440px; margin: 0 auto; }
+.preview-banner {
+  background: linear-gradient(135deg, #0a2e2c, #0f3d3a);
+  color: #fff; padding: 20px 32px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid #14b8a6;
+}
+.preview-banner h1 { margin:0; font-size: 18px; font-weight: 700; }
+.preview-banner small { opacity: 0.7; font-size: 12px; }
+.preview-banner .live {
+  margin-left: auto; background: rgba(20, 184, 166, 0.2); color: #5eead4;
+  padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(20, 184, 166, 0.4);
+}
+</style>
+</head>
+<body>
+<div class="preview-wrap">
+  <div class="preview-banner">
+    <div>
+      <h1>MediCore Hospital Management System</h1>
+      <small>Patient Management preview · Live data · 2026-06-07</small>
+    </div>
+    <div class="live">● LIVE</div>
+  </div>
+
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-area">
+        <div class="logo-badge"><i class="ti ti-heart-plus"></i><span class="logo-name">MediCore</span></div>
+        <div class="logo-sub">Hospital Management System</div>
+      </div>
+      <nav class="nav-scroll">
+        <div class="nav-group">
+          <div class="nav-label">Overview</div>
+          <div class="nav-item"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+          <div class="nav-item active"><i class="ti ti-users"></i>Patients</div>
+          <div class="nav-item"><i class="ti ti-calendar-event"></i>Appointments</div>
+          <div class="nav-item"><i class="ti ti-stethoscope"></i>Doctors</div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Clinical</div>
+          <div class="nav-item"><i class="ti ti-file-text"></i>EMR / Records</div>
+          <div class="nav-item"><i class="ti ti-pill"></i>Pharmacy</div>
+          <div class="nav-item"><i class="ti ti-microscope"></i>Laboratory</div>
+          <div class="nav-item"><i class="ti ti-bed"></i>Wards &amp; Beds</div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Finance &amp; Admin</div>
+          <div class="nav-item"><i class="ti ti-receipt-2"></i>Billing</div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i>Reports</div>
+          <div class="nav-item"><i class="ti ti-id-badge-2"></i>Staff</div>
+          <div class="nav-item"><i class="ti ti-settings"></i>Settings</div>
+        </div>
+      </nav>
+      <div class="user-footer">
+        <div class="user-av">AD</div>
+        <div class="user-meta"><div class="user-name">Admin User</div><div class="user-role">Super Admin</div></div>
+        <i class="ti ti-logout user-logout" title="Sign out"></i>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="page-tag">Patients</span>
+          <span class="topbar-title">Patient Management</span>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-search"><i class="ti ti-search"></i><input placeholder="Search patients…"><kbd>⌘K</kbd></div>
+          <button class="icon-btn"><i class="ti ti-bell"></i><span class="notif-dot"></span></button>
+          <div class="date-chip"><i class="ti ti-calendar"></i>Sun, Jun 07 2026</div>
+          <div class="topbar-av">AD</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page active">
+          <div class="section-header anim-card" style="--d:0ms">
+            <div>
+              <div class="section-title">Patient Management</div>
+              <div class="section-sub">Search, register and manage all patient records</div>
+            </div>
+            <button class="btn-prim"><i class="ti ti-plus"></i>Register Patient</button>
+          </div>
+
+          <div class="search-row anim-card" style="--d:60ms">
+            <div class="search-box"><i class="ti ti-search"></i><input placeholder="Search by name, ID, phone number…"></div>
+            <div class="filter-chip on">All</div>
+            <div class="filter-chip">OPD</div>
+            <div class="filter-chip">IPD</div>
+            <div class="filter-chip">Discharged</div>
+          </div>
+
+          <div class="card anim-card" style="--d:120ms">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Patient ID</th><th>Name</th><th>Age / Sex</th><th>Doctor</th><th>Department</th><th>Status</th><th>Last Visit</th></tr></thead>
+                <tbody>
+                  <tr><td class="id">P-1042</td><td><strong>Ramesh Gupta</strong></td><td>58, M</td><td>Dr. R. Sharma</td><td>Cardiology</td><td><span class="pill p-red">Critical</span></td><td>2026-06-07</td></tr>
+                  <tr><td class="id">P-1041</td><td><strong>Priya Mehta</strong></td><td>32, F</td><td>Dr. P. Rao</td><td>Gynecology</td><td><span class="pill p-blue">Active</span></td><td>2026-06-07</td></tr>
+                  <tr><td class="id">P-1040</td><td><strong>Anil Kumar</strong></td><td>45, M</td><td>Dr. M. Jain</td><td>Orthopedics</td><td><span class="pill p-amber">Waiting</span></td><td>2026-06-06</td></tr>
+                  <tr><td class="id">P-1039</td><td><strong>Sunita Devi</strong></td><td>61, F</td><td>Dr. R. Sharma</td><td>Cardiology</td><td><span class="pill p-green">Stable</span></td><td>2026-06-05</td></tr>
+                  <tr><td class="id">P-1038</td><td><strong>Kavya Singh</strong></td><td>8, F</td><td>Dr. K. Patel</td><td>Pediatrics</td><td><span class="pill p-green">Stable</span></td><td>2026-06-05</td></tr>
+                  <tr><td class="id">P-1037</td><td><strong>Vikram Reddy</strong></td><td>52, M</td><td>Dr. A. Khan</td><td>Neurology</td><td><span class="pill p-blue">Active</span></td><td>2026-06-04</td></tr>
+                  <tr><td class="id">P-1036</td><td><strong>Meera Joshi</strong></td><td>29, F</td><td>Dr. S. Iyer</td><td>Dermatology</td><td><span class="pill p-green">Discharged</span></td><td>2026-06-03</td></tr>
+                  <tr><td class="id">P-1035</td><td><strong>Rahul Verma</strong></td><td>37, M</td><td>Dr. M. Jain</td><td>Orthopedics</td><td><span class="pill p-green">Stable</span></td><td>2026-06-02</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+</body>
+</html>

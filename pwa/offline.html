@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a2e2c">
+<title>Offline — MediCore</title>
+<link rel="icon" type="image/svg+xml" href="assets/icon.svg">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+  body { display:flex; align-items:center; justify-content:center; min-height:100vh; margin:0;
+         background: linear-gradient(135deg, #0a2e2c, #0f3d3a); color:#fff;
+         font-family: 'Inter', system-ui, -apple-system, sans-serif; padding:24px; }
+  .offline-card { max-width:480px; text-align:center; }
+  .offline-icon { width:96px; height:96px; border-radius:24px; margin:0 auto 24px;
+                  background:rgba(20,184,166,.15); display:flex; align-items:center; justify-content:center;
+                  border:1px solid rgba(20,184,166,.3); }
+  .offline-icon i { font-size:48px; color:#5eead4; }
+  h1 { font-size:24px; font-weight:700; margin:0 0 12px; }
+  p { font-size:15px; opacity:0.8; line-height:1.6; margin:0 0 24px; }
+  .retry-btn { display:inline-flex; align-items:center; gap:8px;
+               background:#14b8a6; color:#fff; border:none; padding:12px 24px;
+               border-radius:10px; font-size:14px; font-weight:600; cursor:pointer;
+               text-decoration:none; transition: background .2s; }
+  .retry-btn:hover { background:#0d9488; }
+  .cached-note { margin-top:24px; font-size:12px; opacity:0.5; }
+</style>
+</head>
+<body>
+<div class="offline-card">
+  <div class="offline-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12.55a11 11 0 0 1 14.08 0"/>
+      <path d="M1.42 9a16 16 0 0 1 21.16 0"/>
+      <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+      <line x1="12" y1="20" x2="12.01" y2="20"/>
+      <line x1="2" y1="2" x2="22" y2="22" stroke="#ef4444"/>
+    </svg>
+  </div>
+  <h1>You're offline</h1>
+  <p>MediCore is a Progressive Web App — cached data and offline features are still available. Reconnect to sync the latest records.</p>
+  <a href="./index.html" class="retry-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+    Try again
+  </a>
+  <div class="cached-note">Cached data from your last visit is available</div>
+</div>
+</body>
+</html>

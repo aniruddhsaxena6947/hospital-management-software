@@ -1,0 +1,23 @@
+{
+  "name": "medicore-hms-backend",
+  "version": "1.0.0",
+  "description": "MediCore Hospital Management System — Node.js + Express + SQLite backend",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "seed": "node seed.js",
+    "reset": "rm -f data/hms.db && node seed.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.3.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MediCore HMS — Dashboard Preview</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/dist/tabler-icons.min.css">
+<link rel="stylesheet" href="/styles.css">
+<style>
+body { background:#f5f6fa; padding:0; margin:0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+.preview-wrap { max-width: 1440px; margin: 0 auto; }
+.preview-banner {
+  background: linear-gradient(135deg, #0a2e2c, #0f3d3a);
+  color: #fff; padding: 20px 32px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 3px solid #14b8a6;
+}
+.preview-banner h1 { margin:0; font-size: 18px; font-weight: 700; letter-spacing: 0.3px; }
+.preview-banner small { opacity: 0.7; font-size: 12px; }
+.preview-banner .live {
+  margin-left: auto; background: rgba(20, 184, 166, 0.2); color: #5eead4;
+  padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(20, 184, 166, 0.4);
+}
+</style>
+</head>
+<body>
+<div class="preview-wrap">
+  <div class="preview-banner">
+    <div>
+      <h1>MediCore Hospital Management System</h1>
+      <small>Dashboard preview · Live data from SQLite · 2026-06-07</small>
+    </div>
+    <div class="live">● LIVE</div>
+  </div>
+
+  <!-- App shell -->
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo-area">
+        <div class="logo-badge"><i class="ti ti-heart-plus"></i><span class="logo-name">MediCore</span></div>
+        <div class="logo-sub">Hospital Management System</div>
+      </div>
+      <nav class="nav-scroll">
+        <div class="nav-group">
+          <div class="nav-label">Overview</div>
+          <div class="nav-item active"><i class="ti ti-layout-dashboard"></i>Dashboard</div>
+          <div class="nav-item"><i class="ti ti-users"></i>Patients</div>
+          <div class="nav-item"><i class="ti ti-calendar-event"></i>Appointments</div>
+          <div class="nav-item"><i class="ti ti-stethoscope"></i>Doctors</div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Clinical</div>
+          <div class="nav-item"><i class="ti ti-file-text"></i>EMR / Records</div>
+          <div class="nav-item"><i class="ti ti-pill"></i>Pharmacy</div>
+          <div class="nav-item"><i class="ti ti-microscope"></i>Laboratory</div>
+          <div class="nav-item"><i class="ti ti-bed"></i>Wards &amp; Beds</div>
+        </div>
+        <div class="nav-group">
+          <div class="nav-label">Finance &amp; Admin</div>
+          <div class="nav-item"><i class="ti ti-receipt-2"></i>Billing</div>
+          <div class="nav-item"><i class="ti ti-chart-bar"></i>Reports</div>
+          <div class="nav-item"><i class="ti ti-id-badge-2"></i>Staff</div>
+          <div class="nav-item"><i class="ti ti-settings"></i>Settings</div>
+        </div>
+      </nav>
+      <div class="user-footer">
+        <div class="user-av">AD</div>
+        <div class="user-meta"><div class="user-name">Admin User</div><div class="user-role">Super Admin</div></div>
+        <i class="ti ti-logout user-logout" title="Sign out"></i>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="page-tag">Overview</span>
+          <span class="topbar-title">Dashboard</span>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-search"><i class="ti ti-search"></i><input placeholder="Search patients, invoices, medicines…"><kbd>⌘K</kbd></div>
+          <button class="icon-btn"><i class="ti ti-bell"></i><span class="notif-dot"></span></button>
+          <div class="date-chip"><i class="ti ti-calendar"></i>Sun, Jun 07 2026</div>
+          <div class="topbar-av">AD</div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="page active">
+          <div class="stat-grid">
+            <div class="scard" style="--d:0ms">
+              <div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-users"></i></div><span class="scard-badge p-green">+12 today</span></div>
+              <div><div class="scard-val">4</div><div class="scard-label">Total Patients Today</div></div>
+              <div class="scard-sub up"><i class="ti ti-trending-up"></i>8% above avg</div>
+            </div>
+            <div class="scard" style="--d:80ms">
+              <div class="scard-top"><div class="scard-icon ic-purple"><i class="ti ti-calendar-check"></i></div><span class="scard-badge p-amber">6 pending</span></div>
+              <div><div class="scard-val">7</div><div class="scard-label">Appointments Today</div></div>
+              <div class="scard-sub purple"><i class="ti ti-check"></i>1 completed</div>
+            </div>
+            <div class="scard" style="--d:160ms">
+              <div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-stethoscope"></i></div><span class="scard-badge p-green">3 free now</span></div>
+              <div><div class="scard-val">5</div><div class="scard-label">Doctors On Duty</div></div>
+              <div class="scard-sub muted"><i class="ti ti-clock"></i>1 in surgery</div>
+            </div>
+            <div class="scard" style="--d:240ms">
+              <div class="scard-top"><div class="scard-icon ic-amber"><i class="ti ti-currency-rupee"></i></div><span class="scard-badge p-green">+18k vs avg</span></div>
+              <div><div class="scard-val">₹15,700</div><div class="scard-label">Revenue Today</div></div>
+              <div class="scard-sub up"><i class="ti ti-trending-up"></i>Strong day</div>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div class="card anim-card" style="--d:120ms">
+              <div class="card-header"><div class="card-title"><i class="ti ti-clock"></i>Recent Appointments</div><span class="view-all">View all</span></div>
+              <div class="appt-list">
+                <div class="appt-item"><div class="appt-time">09:00</div><div class="appt-dot done"></div><div class="appt-info"><div class="appt-name">Ramesh Gupta</div><div class="appt-meta">Cardiology · Dr. R. Sharma</div></div><span class="pill p-green">Done</span></div>
+                <div class="appt-item"><div class="appt-time">10:30</div><div class="appt-dot on"></div><div class="appt-info"><div class="appt-name">Priya Mehta</div><div class="appt-meta">Gynecology · Dr. P. Rao</div></div><span class="pill p-blue">Ongoing</span></div>
+                <div class="appt-item"><div class="appt-time">11:00</div><div class="appt-dot wait"></div><div class="appt-info"><div class="appt-name">Anil Kumar</div><div class="appt-meta">Orthopedics · Dr. M. Jain</div></div><span class="pill p-amber">Waiting</span></div>
+                <div class="appt-item"><div class="appt-time">11:30</div><div class="appt-dot sched"></div><div class="appt-info"><div class="appt-name">Sunita Devi</div><div class="appt-meta">Cardiology · Dr. R. Sharma</div></div><span class="pill p-gray">Scheduled</span></div>
+                <div class="appt-item"><div class="appt-time">12:00</div><div class="appt-dot sched"></div><div class="appt-info"><div class="appt-name">Kavya Singh</div><div class="appt-meta">Pediatrics · Dr. K. Patel</div></div><span class="pill p-gray">Scheduled</span></div>
+              </div>
+            </div>
+            <div class="card anim-card" style="--d:180ms">
+              <div class="card-header"><div class="card-title"><i class="ti ti-alert-triangle"></i>Critical Alerts</div><span class="pill p-red">3 active</span></div>
+              <div class="alert-row"><div class="alert-icon red"><i class="ti ti-pill"></i></div><div><div class="alert-title">Low stock — Paracetamol 500mg</div><div class="alert-sub">Only 12 strips remaining</div></div><div class="alert-time">10 min</div></div>
+              <div class="alert-row"><div class="alert-icon amber"><i class="ti ti-heart-rate-monitor"></i></div><div><div class="alert-title">ICU — Patient #1042 BP critical</div><div class="alert-sub">Immediate attention needed</div></div><div class="alert-time">25 min</div></div>
+              <div class="alert-row"><div class="alert-icon primary"><i class="ti ti-flask"></i></div><div><div class="alert-title">Lab report ready — Patient #1038</div><div class="alert-sub">Blood CBC results uploaded</div></div><div class="alert-time">1 hr</div></div>
+              <div class="alert-row"><div class="alert-icon green"><i class="ti ti-circle-check"></i></div><div><div class="alert-title">Surgery #SC-119 completed</div><div class="alert-sub">Patient shifted to recovery</div></div><div class="alert-time">2 hr</div></div>
+            </div>
+          </div>
+
+          <div class="card anim-card" style="--d:240ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-bed"></i>Ward Occupancy</div><span class="view-all">Manage beds</span></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Ward</th><th>Total</th><th>Occupied</th><th>Available</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>General Ward</strong></td><td>60</td><td>52</td><td>8</td><td><div class="occ-bar"><div class="occ-fill amber" style="width:87%"></div></div><span class="pill p-amber">87%</span></td></tr>
+                  <tr><td><strong>ICU</strong></td><td>20</td><td>18</td><td>2</td><td><div class="occ-bar"><div class="occ-fill red" style="width:90%"></div></div><span class="pill p-red">90%</span></td></tr>
+                  <tr><td><strong>Maternity</strong></td><td>30</td><td>21</td><td>9</td><td><div class="occ-bar"><div class="occ-fill green" style="width:70%"></div></div><span class="pill p-green">70%</span></td></tr>
+                  <tr><td><strong>Pediatric</strong></td><td>25</td><td>14</td><td>11</td><td><div class="occ-bar"><div class="occ-fill green" style="width:56%"></div></div><span class="pill p-green">56%</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</div>
+</body>
+</html>

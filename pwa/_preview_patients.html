@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>MediCore</title>
+</head>
+<body>
+<script>
+  const u = {id:1, email:'admin@medicore.health', name:'Admin User', role:'admin', avatar:'AD'};
+  localStorage.setItem('medicore.user.v1', JSON.stringify(u));
+  localStorage.setItem('medicore.session.v1', 'demo-preview');
+  setTimeout(() => { location.replace('index.html#patients'); }, 100);
+</script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MediCore — Hospital Management System</title>
+<meta name="description" content="MediCore is a premium hospital management system for modern healthcare facilities." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230d9488'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z'/%3E%3C/svg%3E" />
+</head>
+<body>
+
+<!-- ============================= SIGN IN ============================= -->
+<div id="auth-screen" class="auth-screen">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="logo-badge"><i class="ti ti-heart-plus"></i><span class="logo-name">MediCore</span></div>
+      <div class="logo-sub">Hospital Management System</div>
+    </div>
+
+    <div class="auth-hero">
+      <h1>Modern care, <span class="grad-text">simplified operations.</span></h1>
+      <p>One unified workspace for patients, doctors, pharmacy, lab, billing and wards — designed for hospitals that take experience seriously.</p>
+
+      <div class="auth-features">
+        <div class="auth-feat"><i class="ti ti-shield-check"></i><span>HIPAA-aware architecture</span></div>
+        <div class="auth-feat"><i class="ti ti-bolt"></i><span>Real-time bed &amp; appointment sync</span></div>
+        <div class="auth-feat"><i class="ti ti-chart-line"></i><span>Live revenue &amp; clinical insights</span></div>
+      </div>
+    </div>
+
+    <div class="auth-foot">
+      <span id="server-status" class="server-status"><i class="ti ti-loader-2"></i> Checking backend…</span>
+      <span class="auth-foot-dot">•</span>
+      <span>© 2026 MediCore Health Systems</span>
+      <span class="auth-foot-dot">•</span>
+      <span>v1.0.0</span>
+    </div>
+
+    <div class="auth-blob a"></div>
+    <div class="auth-blob b"></div>
+    <div class="auth-blob c"></div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-card" id="auth-card">
+      <div class="auth-card-head">
+        <div class="auth-eyebrow">Welcome back</div>
+        <h2>Sign in to your workspace</h2>
+        <p>Enter your credentials to access the hospital console.</p>
+      </div>
+
+      <form id="login-form" class="auth-form" autocomplete="off" novalidate>
+        <div class="fg fg-anim" style="--d:0ms">
+          <label for="email">Work email</label>
+          <div class="input-wrap">
+            <i class="ti ti-mail"></i>
+            <input type="email" id="email" name="email" placeholder="admin@medicore.health" value="admin@medicore.health" required />
+          </div>
+        </div>
+
+        <div class="fg fg-anim" style="--d:80ms">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <i class="ti ti-lock"></i>
+            <input type="password" id="password" name="password" placeholder="Enter your password" value="medicore123" required />
+            <button type="button" class="eye-btn" id="eye-btn" aria-label="Toggle password visibility">
+              <i class="ti ti-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="auth-row fg-anim" style="--d:160ms">
+          <label class="check"><input type="checkbox" id="remember" checked /><span class="check-box"></span><span>Remember me on this device</span></label>
+          <a href="#" class="link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-prim auth-submit fg-anim" style="--d:220ms" id="login-btn">
+          <span class="btn-label">Sign in to MediCore</span>
+          <i class="ti ti-arrow-right"></i>
+        </button>
+
+        <div class="auth-divider fg-anim" style="--d:280ms"><span>or continue with</span></div>
+
+        <div class="auth-socials fg-anim" style="--d:320ms">
+          <button type="button" class="soc-btn"><i class="ti ti-brand-google"></i>Google SSO</button>
+          <button type="button" class="soc-btn"><i class="ti ti-brand-microsoft"></i>Microsoft</button>
+        </div>
+
+        <div class="auth-foot-mini fg-anim" style="--d:380ms">
+          Don't have an account? <a href="#" class="link">Talk to sales</a>
+        </div>
+      </form>
+
+      <div class="auth-loader" id="auth-loader" aria-hidden="true">
+        <div class="spinner"><div></div><div></div><div></div><div></div></div>
+        <div class="loader-text">Authenticating secure session…</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================= APP SHELL ============================= -->
+<div id="app-shell" class="app" hidden>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo-area">
+      <div class="logo-badge"><i class="ti ti-heart-plus" aria-hidden="true"></i><span class="logo-name">MediCore</span></div>
+      <div class="logo-sub">Hospital Management System</div>
+    </div>
+
+    <nav class="nav-scroll">
+      <div class="nav-group">
+        <div class="nav-label">Overview</div>
+        <div class="nav-item active" data-page="dashboard"><i class="ti ti-layout-dashboard"></i>Dashboard<span class="nav-dot"></span></div>
+        <div class="nav-item" data-page="patients"><i class="ti ti-users"></i>Patients</div>
+        <div class="nav-item" data-page="appointments"><i class="ti ti-calendar-event"></i>Appointments</div>
+        <div class="nav-item" data-page="doctors"><i class="ti ti-stethoscope"></i>Doctors</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Clinical</div>
+        <div class="nav-item" data-page="emr"><i class="ti ti-file-text"></i>EMR / Records</div>
+        <div class="nav-item" data-page="pharmacy"><i class="ti ti-pill"></i>Pharmacy</div>
+        <div class="nav-item" data-page="lab"><i class="ti ti-microscope"></i>Laboratory</div>
+        <div class="nav-item" data-page="wards"><i class="ti ti-bed"></i>Wards &amp; Beds</div>
+      </div>
+      <div class="nav-group">
+        <div class="nav-label">Finance &amp; Admin</div>
+        <div class="nav-item" data-page="billing"><i class="ti ti-receipt-2"></i>Billing</div>
+        <div class="nav-item" data-page="reports"><i class="ti ti-chart-bar"></i>Reports</div>
+        <div class="nav-item" data-page="staff"><i class="ti ti-id-badge-2"></i>Staff</div>
+        <div class="nav-item" data-page="settings"><i class="ti ti-settings"></i>Settings</div>
+      </div>
+    </nav>
+
+    <div class="user-footer">
+      <div class="user-av">AD</div>
+      <div class="user-meta"><div class="user-name">Admin User</div><div class="user-role">Super Admin</div></div>
+      <i class="ti ti-logout user-logout" id="logout-btn" title="Sign out" aria-label="Sign out"></i>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <header class="topbar" id="topbar">
+      <div class="topbar-left">
+        <button class="icon-btn mobile-only" id="sidebar-toggle" aria-label="Toggle menu"><i class="ti ti-menu-2"></i></button>
+        <span class="page-tag" id="ptag">Overview</span>
+        <span class="topbar-title" id="ptitle">Dashboard</span>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-search">
+          <i class="ti ti-search"></i>
+          <input type="text" placeholder="Search patients, invoices, medicines…" />
+          <kbd>⌘K</kbd>
+        </div>
+        <button class="icon-btn" aria-label="Notifications"><i class="ti ti-bell"></i><span class="notif-dot"></span></button>
+        <div class="date-chip"><i class="ti ti-calendar"></i><span id="live-date">—</span></div>
+        <div class="topbar-av" title="Admin User">AD</div>
+      </div>
+    </header>
+
+    <main class="content" id="content">
+
+      <!-- ============================= DASHBOARD ============================= -->
+      <section class="page active" id="pg-dashboard" data-title="Dashboard" data-tag="Overview">
+        <div class="stat-grid" id="dashboard-stats">
+          <div class="scard" style="--d:0ms">
+            <div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-users"></i></div><span class="scard-badge p-green">+12 today</span></div>
+            <div><div class="scard-val" data-field="patients_today" data-count="142">0</div><div class="scard-label">Total Patients Today</div></div>
+            <div class="scard-sub up"><i class="ti ti-trending-up"></i>8% above avg</div>
+          </div>
+          <div class="scard" style="--d:80ms">
+            <div class="scard-top"><div class="scard-icon ic-purple"><i class="ti ti-calendar-check"></i></div><span class="scard-badge p-amber">14 pending</span></div>
+            <div><div class="scard-val" data-field="appointments_today" data-count="87">0</div><div class="scard-label">Appointments Today</div></div>
+            <div class="scard-sub purple"><i class="ti ti-check"></i>73 completed</div>
+          </div>
+          <div class="scard" style="--d:160ms">
+            <div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-stethoscope"></i></div><span class="scard-badge p-green">6 free now</span></div>
+            <div><div class="scard-val" data-field="doctors_on_duty" data-count="24">0</div><div class="scard-label">Doctors On Duty</div></div>
+            <div class="scard-sub muted"><i class="ti ti-clock"></i>3 in surgery</div>
+          </div>
+          <div class="scard" style="--d:240ms">
+            <div class="scard-top"><div class="scard-icon ic-amber"><i class="ti ti-currency-rupee"></i></div><span class="scard-badge p-green">+18k vs avg</span></div>
+            <div><div class="scard-val" data-field="revenue" data-prefix="₹" data-count="1.4" data-suffix="L">₹0</div><div class="scard-label">Revenue Today</div></div>
+            <div class="scard-sub up"><i class="ti ti-trending-up"></i>Strong day</div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="card anim-card" style="--d:120ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-clock"></i>Recent Appointments</div><span class="view-all">View all</span></div>
+            <div class="appt-list">
+              <div class="appt-item"><div class="appt-time">09:00</div><div class="appt-dot done"></div><div class="appt-info"><div class="appt-name">Ramesh Gupta</div><div class="appt-meta">Cardiology · Dr. Sharma</div></div><span class="pill p-green">Done</span></div>
+              <div class="appt-item"><div class="appt-time">10:30</div><div class="appt-dot on"></div><div class="appt-info"><div class="appt-name">Priya Mehta</div><div class="appt-meta">Gynecology · Dr. Rao</div></div><span class="pill p-blue">Ongoing</span></div>
+              <div class="appt-item"><div class="appt-time">11:00</div><div class="appt-dot wait"></div><div class="appt-info"><div class="appt-name">Anil Kumar</div><div class="appt-meta">Orthopedics · Dr. Jain</div></div><span class="pill p-amber">Waiting</span></div>
+              <div class="appt-item"><div class="appt-time">11:30</div><div class="appt-dot sched"></div><div class="appt-info"><div class="appt-name">Sunita Devi</div><div class="appt-meta">Neurology · Dr. Verma</div></div><span class="pill p-gray">Scheduled</span></div>
+              <div class="appt-item"><div class="appt-time">12:00</div><div class="appt-dot sched"></div><div class="appt-info"><div class="appt-name">Kavya Singh</div><div class="appt-meta">Pediatrics · Dr. Patel</div></div><span class="pill p-gray">Scheduled</span></div>
+            </div>
+          </div>
+          <div class="card anim-card" style="--d:180ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-alert-triangle"></i>Critical Alerts</div><span class="pill p-red">3 active</span></div>
+            <div class="alert-row"><div class="alert-icon red"><i class="ti ti-pill"></i></div><div><div class="alert-title">Low stock — Paracetamol 500mg</div><div class="alert-sub">Only 12 strips remaining</div></div><div class="alert-time">10 min</div></div>
+            <div class="alert-row"><div class="alert-icon amber"><i class="ti ti-heart-rate-monitor"></i></div><div><div class="alert-title">ICU — Patient #1042 BP critical</div><div class="alert-sub">Immediate attention needed</div></div><div class="alert-time">25 min</div></div>
+            <div class="alert-row"><div class="alert-icon primary"><i class="ti ti-flask"></i></div><div><div class="alert-title">Lab report ready — Patient #1038</div><div class="alert-sub">Blood CBC results uploaded</div></div><div class="alert-time">1 hr</div></div>
+            <div class="alert-row"><div class="alert-icon green"><i class="ti ti-circle-check"></i></div><div><div class="alert-title">Surgery #SC-119 completed</div><div class="alert-sub">Patient shifted to recovery</div></div><div class="alert-time">2 hr</div></div>
+          </div>
+        </div>
+
+        <div class="card anim-card" style="--d:240ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-bed"></i>Ward Occupancy</div><span class="view-all">Manage beds</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Ward</th><th>Total</th><th>Occupied</th><th>Available</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><strong>General</strong></td><td>60</td><td>52</td><td>8</td><td><div class="occ-bar"><div class="occ-fill amber" style="width:87%"></div></div><span class="pill p-amber">87%</span></td></tr>
+                <tr><td><strong>ICU</strong></td><td>20</td><td>18</td><td>2</td><td><div class="occ-bar"><div class="occ-fill red" style="width:90%"></div></div><span class="pill p-red">90%</span></td></tr>
+                <tr><td><strong>Maternity</strong></td><td>30</td><td>21</td><td>9</td><td><div class="occ-bar"><div class="occ-fill green" style="width:70%"></div></div><span class="pill p-green">70%</span></td></tr>
+                <tr><td><strong>Pediatric</strong></td><td>25</td><td>14</td><td>11</td><td><div class="occ-bar"><div class="occ-fill green" style="width:56%"></div></div><span class="pill p-green">56%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= PATIENTS ============================= -->
+      <section class="page" id="pg-patients" data-title="Patient Management" data-tag="Patients">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Patient Management</div><div class="section-sub">Search, register and manage all patient records</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>Register Patient</button>
+        </div>
+        <div class="search-row anim-card" style="--d:60ms">
+          <div class="search-box"><i class="ti ti-search"></i><input placeholder="Search by name, ID, phone number…" /></div>
+          <div class="filter-chip on">All</div><div class="filter-chip">OPD</div><div class="filter-chip">IPD</div><div class="filter-chip">Discharged</div>
+        </div>
+        <div class="card anim-card" style="--d:120ms">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Patient ID</th><th>Name</th><th>Age / Sex</th><th>Doctor</th><th>Department</th><th>Status</th><th>Last Visit</th></tr></thead>
+              <tbody>
+                <tr><td class="id">#P1042</td><td><strong>Ramesh Gupta</strong></td><td>54, M</td><td>Dr. Sharma</td><td>Cardiology</td><td><span class="pill p-blue">Admitted</span></td><td>Today</td></tr>
+                <tr><td class="id">#P1041</td><td><strong>Priya Mehta</strong></td><td>29, F</td><td>Dr. Rao</td><td>Gynecology</td><td><span class="pill p-green">OPD</span></td><td>Today</td></tr>
+                <tr><td class="id">#P1040</td><td><strong>Anil Kumar</strong></td><td>41, M</td><td>Dr. Jain</td><td>Orthopedics</td><td><span class="pill p-green">OPD</span></td><td>Today</td></tr>
+                <tr><td class="id">#P1039</td><td><strong>Kavya Singh</strong></td><td>7, F</td><td>Dr. Patel</td><td>Pediatrics</td><td><span class="pill p-blue">Admitted</span></td><td>Yesterday</td></tr>
+                <tr><td class="id">#P1038</td><td><strong>Mohammed Ali</strong></td><td>62, M</td><td>Dr. Verma</td><td>Neurology</td><td><span class="pill p-gray">Discharged</span></td><td>3 Jun</td></tr>
+                <tr><td class="id">#P1037</td><td><strong>Sunita Devi</strong></td><td>35, F</td><td>Dr. Sharma</td><td>Cardiology</td><td><span class="pill p-amber">Pending</span></td><td>2 Jun</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= APPOINTMENTS ============================= -->
+      <section class="page" id="pg-appointments" data-title="Appointments" data-tag="Appointments">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Appointments</div><div class="section-sub">Schedule, track and manage today's appointments</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>Book Appointment</button>
+        </div>
+        <div class="stat-grid" style="grid-template-columns:repeat(4,1fr)">
+          <div class="scard" style="--d:0ms"><div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-calendar-event"></i></div></div><div><div class="scard-val" data-count="87">0</div><div class="scard-label">Today's Total</div></div></div>
+          <div class="scard" style="--d:60ms"><div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-check"></i></div></div><div><div class="scard-val" data-count="61">0</div><div class="scard-label">Completed</div></div></div>
+          <div class="scard" style="--d:120ms"><div class="scard-top"><div class="scard-icon ic-amber"><i class="ti ti-clock"></i></div></div><div><div class="scard-val" data-count="14">0</div><div class="scard-label">Pending</div></div></div>
+          <div class="scard" style="--d:180ms"><div class="scard-top"><div class="scard-icon ic-red"><i class="ti ti-x"></i></div></div><div><div class="scard-val" data-count="12">0</div><div class="scard-label">Cancelled</div></div></div>
+        </div>
+        <div class="card anim-card" style="--d:120ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-list"></i>Today's Schedule</div><button class="btn-out"><i class="ti ti-download"></i>Export</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Type</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody>
+                <tr><td><span class="time-chip">09:00</span></td><td><strong>Ramesh Gupta</strong></td><td>Dr. Sharma</td><td>Follow-up</td><td><span class="pill p-green">Done</span></td><td><span class="action-link">View EMR</span></td></tr>
+                <tr><td><span class="time-chip">10:30</span></td><td><strong>Priya Mehta</strong></td><td>Dr. Rao</td><td>Consultation</td><td><span class="pill p-blue">Ongoing</span></td><td><span class="action-link">View</span></td></tr>
+                <tr><td><span class="time-chip">11:00</span></td><td><strong>Anil Kumar</strong></td><td>Dr. Jain</td><td>X-Ray Review</td><td><span class="pill p-amber">Waiting</span></td><td><span class="action-link">Call In</span></td></tr>
+                <tr><td><span class="time-chip">11:30</span></td><td><strong>Sunita Devi</strong></td><td>Dr. Sharma</td><td>New Patient</td><td><span class="pill p-gray">Scheduled</span></td><td><span class="action-link">View</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= DOCTORS ============================= -->
+      <section class="page" id="pg-doctors" data-title="Doctor Management" data-tag="Doctors">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Doctor Management</div><div class="section-sub">Roster, availability and department overview</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>Add Doctor</button>
+        </div>
+        <div class="doc-grid">
+          <div class="doc-card anim-card" style="--d:0ms"><div class="doc-av primary">RS</div><div class="doc-name">Dr. R. Sharma</div><div class="doc-dept">Cardiology</div><span class="pill p-green">Available</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>8 appointments</div><div class="bar-wrap"><div class="bar-fill" style="width:80%"></div></div></div>
+          <div class="doc-card anim-card" style="--d:60ms"><div class="doc-av purple">PR</div><div class="doc-name">Dr. P. Rao</div><div class="doc-dept">Gynecology</div><span class="pill p-blue">In Consultation</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>6 appointments</div><div class="bar-wrap"><div class="bar-fill purple" style="width:60%"></div></div></div>
+          <div class="doc-card anim-card" style="--d:120ms"><div class="doc-av green">MJ</div><div class="doc-name">Dr. M. Jain</div><div class="doc-dept">Orthopedics</div><span class="pill p-amber">In Surgery</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>4 appointments</div><div class="bar-wrap"><div class="bar-fill green" style="width:40%"></div></div></div>
+          <div class="doc-card anim-card" style="--d:180ms"><div class="doc-av amber">KP</div><div class="doc-name">Dr. K. Patel</div><div class="doc-dept">Pediatrics</div><span class="pill p-green">Available</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>9 appointments</div><div class="bar-wrap"><div class="bar-fill amber" style="width:90%"></div></div></div>
+          <div class="doc-card anim-card" style="--d:240ms"><div class="doc-av red">AV</div><div class="doc-name">Dr. A. Verma</div><div class="doc-dept">Neurology</div><span class="pill p-gray">On Leave</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>0 appointments</div><div class="bar-wrap"><div class="bar-fill" style="width:0%"></div></div></div>
+          <div class="doc-card anim-card" style="--d:300ms"><div class="doc-av teal">SG</div><div class="doc-name">Dr. S. Gupta</div><div class="doc-dept">Dermatology</div><span class="pill p-green">Available</span><div class="doc-stat"><i class="ti ti-calendar-check"></i>5 appointments</div><div class="bar-wrap"><div class="bar-fill green" style="width:50%"></div></div></div>
+        </div>
+      </section>
+
+      <!-- ============================= EMR ============================= -->
+      <section class="page" id="pg-emr" data-title="EMR / Medical Records" data-tag="Clinical">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Electronic Medical Records</div><div class="section-sub">Patient history, vitals, prescriptions &amp; timeline</div></div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select id="emr-patient" class="emr-select"></select>
+            <button class="btn-prim"><i class="ti ti-plus"></i>New Record</button>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="card anim-card" style="--d:60ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-user-circle"></i>Patient details</div></div>
+            <div id="emr-patient-head">Loading…</div>
+          </div>
+          <div class="card anim-card" style="--d:120ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-clock"></i>Visit History</div></div>
+            <div id="emr-timeline">Loading…</div>
+          </div>
+        </div>
+        <div class="card anim-card" style="--d:180ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-pill"></i>Prescriptions</div><button class="btn-out"><i class="ti ti-download"></i>Print PDF</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Medicine</th><th>Dose</th><th>Frequency</th><th>Duration</th><th>Notes</th></tr></thead>
+              <tbody id="emr-prescriptions"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= PHARMACY ============================= -->
+      <section class="page" id="pg-pharmacy" data-title="Pharmacy" data-tag="Clinical">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Pharmacy</div><div class="section-sub">Inventory, low-stock alerts &amp; dispensation</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>Add Medicine</button>
+        </div>
+        <div class="stat-grid">
+          <div class="scard" style="--d:0ms"><div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-pill"></i></div></div><div><div class="scard-val" data-field="ph-total" data-count="348">0</div><div class="scard-label">Total Medicines</div></div></div>
+          <div class="scard" style="--d:60ms"><div class="scard-top"><div class="scard-icon ic-red"><i class="ti ti-alert-triangle"></i></div></div><div><div class="scard-val red" data-field="ph-low" data-count="12">0</div><div class="scard-label">Low Stock Alerts</div></div></div>
+          <div class="scard" style="--d:120ms"><div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-check"></i></div></div><div><div class="scard-val" data-count="94">0</div><div class="scard-label">Issued Today</div></div></div>
+          <div class="scard" style="--d:180ms"><div class="scard-top"><div class="scard-icon ic-amber"><i class="ti ti-currency-rupee"></i></div></div><div><div class="scard-val" data-prefix="₹" data-count="24" data-suffix="k">₹0</div><div class="scard-label">Revenue Today</div></div></div>
+        </div>
+        <div class="card anim-card" style="--d:120ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-package"></i>Medicine Stock</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Unit</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Paracetamol 500mg</strong></td><td>Analgesic</td><td class="red"><strong>12</strong></td><td>Strips</td><td><span class="pill p-red">Critical</span></td></tr>
+                <tr><td><strong>Amlodipine 5mg</strong></td><td>Cardiac</td><td>84</td><td>Strips</td><td><span class="pill p-green">OK</span></td></tr>
+                <tr><td><strong>Metformin 500mg</strong></td><td>Diabetic</td><td class="amber"><strong>45</strong></td><td>Strips</td><td><span class="pill p-amber">Low</span></td></tr>
+                <tr><td><strong>Amoxicillin 250mg</strong></td><td>Antibiotic</td><td>120</td><td>Caps</td><td><span class="pill p-green">OK</span></td></tr>
+                <tr><td><strong>Omeprazole 20mg</strong></td><td>GI</td><td class="amber"><strong>30</strong></td><td>Caps</td><td><span class="pill p-amber">Low</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= LAB ============================= -->
+      <section class="page" id="pg-lab" data-title="Laboratory" data-tag="Clinical">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Laboratory</div><div class="section-sub">Test orders, processing &amp; result delivery</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>New Test Order</button>
+        </div>
+        <div class="card anim-card" style="--d:60ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-microscope"></i>Test Orders — Today</div><span class="pill p-blue">4 tests</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Patient</th><th>Test</th><th>Ordered By</th><th>Time</th><th>Status</th><th>Result</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Ramesh Gupta</strong></td><td>CBC + ECG</td><td>Dr. Sharma</td><td>09:15</td><td><span class="pill p-green">Ready</span></td><td><span class="action-link">View PDF</span></td></tr>
+                <tr><td><strong>Priya Mehta</strong></td><td>HbA1c</td><td>Dr. Rao</td><td>10:45</td><td><span class="pill p-amber">Processing</span></td><td class="muted">—</td></tr>
+                <tr><td><strong>Kavya Singh</strong></td><td>Dengue NS1</td><td>Dr. Patel</td><td>11:00</td><td><span class="pill p-amber">Processing</span></td><td class="muted">—</td></tr>
+                <tr><td><strong>Ravi Tiwari</strong></td><td>Blood Sugar (F)</td><td>Dr. Gupta</td><td>11:30</td><td><span class="pill p-blue">Collected</span></td><td class="muted">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= WARDS ============================= -->
+      <section class="page" id="pg-wards" data-title="Ward &amp; Bed Management" data-tag="Clinical">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Ward &amp; Bed Management</div><div class="section-sub">Live occupancy across hospital wards</div></div>
+        </div>
+        <div class="stat-grid">
+          <div class="scard" style="--d:0ms"><div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-bed"></i></div></div><div><div class="scard-val" data-field="ward-total" data-count="200">0</div><div class="scard-label">Total Beds</div></div></div>
+          <div class="scard" style="--d:60ms"><div class="scard-top"><div class="scard-icon ic-red"><i class="ti ti-users"></i></div></div><div><div class="scard-val red" data-field="ward-occ" data-count="158">0</div><div class="scard-label">Occupied</div></div></div>
+          <div class="scard" style="--d:120ms"><div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-circle-check"></i></div></div><div><div class="scard-val green" data-field="ward-avail" data-count="42">0</div><div class="scard-label">Available</div></div></div>
+          <div class="scard" style="--d:180ms"><div class="scard-top"><div class="scard-icon ic-red"><i class="ti ti-heart-rate-monitor"></i></div></div><div><div class="scard-val" data-field="ward-icu" data-suffix="%" data-count="90">0</div><div class="scard-label">ICU Occupancy</div></div></div>
+        </div>
+        <div class="card anim-card" style="--d:120ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-building-hospital"></i>Ward Overview</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Ward</th><th>Total</th><th>Occupied</th><th>Available</th><th>Occupancy</th></tr></thead>
+              <tbody>
+                <tr><td><strong>General Ward A</strong></td><td>30</td><td>26</td><td>4</td><td><div class="occ-bar"><div class="occ-fill amber" style="width:87%"></div></div><span class="pill p-amber">87%</span></td></tr>
+                <tr><td><strong>ICU</strong></td><td>20</td><td>18</td><td>2</td><td><div class="occ-bar"><div class="occ-fill red" style="width:90%"></div></div><span class="pill p-red">90%</span></td></tr>
+                <tr><td><strong>Maternity Ward</strong></td><td>30</td><td>21</td><td>9</td><td><div class="occ-bar"><div class="occ-fill green" style="width:70%"></div></div><span class="pill p-green">70%</span></td></tr>
+                <tr><td><strong>Pediatric Ward</strong></td><td>25</td><td>14</td><td>11</td><td><div class="occ-bar"><div class="occ-fill green" style="width:56%"></div></div><span class="pill p-green">56%</span></td></tr>
+                <tr><td><strong>Private Rooms</strong></td><td>40</td><td>35</td><td>5</td><td><div class="occ-bar"><div class="occ-fill amber" style="width:88%"></div></div><span class="pill p-amber">88%</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= BILLING ============================= -->
+      <section class="page" id="pg-billing" data-title="Billing &amp; Transactions" data-tag="Finance">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Billing &amp; Transactions</div><div class="section-sub">Invoices, payments and outstanding dues</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>New Invoice</button>
+        </div>
+        <div class="billing-hero anim-card" style="--d:80ms">
+          <div><div class="bh-label">Total Revenue — June 2026</div><div class="bh-val">₹18,42,500</div><div class="bh-sub up"><i class="ti ti-trending-up"></i>+12% vs last month</div></div>
+          <div class="bh-right"><div class="bh-label">Outstanding Dues</div><div class="bh-val gold">₹1,24,000</div><div class="bh-sub">8 invoices pending</div></div>
+        </div>
+        <div class="card anim-card" style="--d:160ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-receipt-2"></i>Recent Transactions</div><button class="btn-out"><i class="ti ti-download"></i>Export</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Invoice</th><th>Patient</th><th>Amount</th><th>Mode</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="id">#INV2241</td><td><strong>Ramesh Gupta</strong></td><td><strong>₹12,500</strong></td><td>Card</td><td>Today</td><td><span class="pill p-green">Paid</span></td></tr>
+                <tr><td class="id">#INV2240</td><td><strong>Priya Mehta</strong></td><td>₹3,200</td><td>UPI</td><td>Today</td><td><span class="pill p-green">Paid</span></td></tr>
+                <tr><td class="id">#INV2239</td><td><strong>Kavya Singh</strong></td><td>₹8,700</td><td>Cash</td><td>Yesterday</td><td><span class="pill p-green">Paid</span></td></tr>
+                <tr><td class="id">#INV2238</td><td><strong>Mohammed Ali</strong></td><td>₹45,000</td><td>Insurance</td><td>4 Jun</td><td><span class="pill p-amber">Pending</span></td></tr>
+                <tr><td class="id">#INV2237</td><td><strong>Sunita Devi</strong></td><td>₹5,600</td><td>Cash</td><td>3 Jun</td><td><span class="pill p-red">Overdue</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= REPORTS ============================= -->
+      <section class="page" id="pg-reports" data-title="Reports &amp; Analytics" data-tag="Finance">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Reports &amp; Analytics</div><div class="section-sub">Performance insights for the current month</div></div>
+          <button class="btn-out"><i class="ti ti-download"></i>Export PDF</button>
+        </div>
+        <div class="stat-grid">
+          <div class="scard" style="--d:0ms"><div class="scard-top"><div class="scard-icon ic-primary"><i class="ti ti-users"></i></div></div><div><div class="scard-val" data-field="rep-patients" data-count="2841">0</div><div class="scard-label">Patients This Month</div></div><div class="scard-sub up"><i class="ti ti-trending-up"></i>+8% vs last month</div></div>
+          <div class="scard" style="--d:60ms"><div class="scard-top"><div class="scard-icon ic-amber"><i class="ti ti-currency-rupee"></i></div></div><div><div class="scard-val" data-field="rep-revenue" data-prefix="₹" data-count="18.4" data-suffix="L">₹0</div><div class="scard-label">Monthly Revenue</div></div><div class="scard-sub up"><i class="ti ti-trending-up"></i>+12% vs last</div></div>
+          <div class="scard" style="--d:120ms"><div class="scard-top"><div class="scard-icon ic-purple"><i class="ti ti-clock"></i></div></div><div><div class="scard-val" data-field="rep-wait" data-suffix=" min" data-count="22">0</div><div class="scard-label">Avg Wait Time</div></div><div class="scard-sub amber"><i class="ti ti-trending-up"></i>+3 min vs target</div></div>
+          <div class="scard" style="--d:180ms"><div class="scard-top"><div class="scard-icon ic-green"><i class="ti ti-bed"></i></div></div><div><div class="scard-val" data-field="rep-bed" data-suffix="%" data-count="79">0</div><div class="scard-label">Bed Utilization</div></div><div class="scard-sub up"><i class="ti ti-check"></i>Above industry avg</div></div>
+        </div>
+        <div class="row2">
+          <div class="card anim-card" style="--d:120ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-chart-bar"></i>Revenue by Department</div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Department</th><th>Revenue</th><th>Patients</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Cardiology</strong></td><td><strong>₹4.2L</strong></td><td>312</td></tr>
+                  <tr><td><strong>Orthopedics</strong></td><td><strong>₹3.8L</strong></td><td>241</td></tr>
+                  <tr><td><strong>Gynecology</strong></td><td><strong>₹2.9L</strong></td><td>198</td></tr>
+                  <tr><td><strong>Neurology</strong></td><td><strong>₹2.4L</strong></td><td>162</td></tr>
+                  <tr><td><strong>Pediatrics</strong></td><td><strong>₹1.8L</strong></td><td>287</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card anim-card" style="--d:180ms">
+            <div class="card-header"><div class="card-title"><i class="ti ti-star"></i>Doctor Performance</div></div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Doctor</th><th>Patients</th><th>Rating</th></tr></thead>
+                <tbody>
+                  <tr><td><strong>Dr. Sharma</strong></td><td>148</td><td><span class="pill p-amber">4.9 ★</span></td></tr>
+                  <tr><td><strong>Dr. Patel</strong></td><td>134</td><td><span class="pill p-amber">4.7 ★</span></td></tr>
+                  <tr><td><strong>Dr. Rao</strong></td><td>121</td><td><span class="pill p-amber">4.8 ★</span></td></tr>
+                  <tr><td><strong>Dr. Jain</strong></td><td>98</td><td><span class="pill p-amber">4.6 ★</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= STAFF ============================= -->
+      <section class="page" id="pg-staff" data-title="Staff Management" data-tag="Admin">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Staff Management</div><div class="section-sub">Active roster, shifts and departments</div></div>
+          <button class="btn-prim"><i class="ti ti-plus"></i>Add Staff</button>
+        </div>
+        <div class="card anim-card" style="--d:60ms">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Department</th><th>Shift</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td class="id">#S001</td><td><strong>Dr. R. Sharma</strong></td><td><span class="pill p-blue">Doctor</span></td><td>Cardiology</td><td>Morning</td><td><span class="pill p-green">On Duty</span></td></tr>
+                <tr><td class="id">#S002</td><td><strong>Meena Kumari</strong></td><td><span class="pill p-purple">Nurse</span></td><td>ICU</td><td>Morning</td><td><span class="pill p-green">On Duty</span></td></tr>
+                <tr><td class="id">#S003</td><td><strong>Raj Mishra</strong></td><td><span class="pill p-gray">Receptionist</span></td><td>OPD</td><td>Morning</td><td><span class="pill p-green">On Duty</span></td></tr>
+                <tr><td class="id">#S004</td><td><strong>Pooja Shah</strong></td><td><span class="pill p-green">Pharmacist</span></td><td>Pharmacy</td><td>Morning</td><td><span class="pill p-green">On Duty</span></td></tr>
+                <tr><td class="id">#S005</td><td><strong>Dr. A. Verma</strong></td><td><span class="pill p-blue">Doctor</span></td><td>Neurology</td><td>—</td><td><span class="pill p-gray">On Leave</span></td></tr>
+                <tr><td class="id">#S006</td><td><strong>Arjun Das</strong></td><td><span class="pill p-amber">Lab Tech</span></td><td>Pathology</td><td>Evening</td><td><span class="pill p-gray">Off Shift</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================= SETTINGS ============================= -->
+      <section class="page" id="pg-settings" data-title="Settings" data-tag="Admin">
+        <div class="section-header anim-card" style="--d:0ms">
+          <div><div class="section-title">Settings</div><div class="section-sub">Hospital profile, access control &amp; integrations</div></div>
+          <button class="btn-prim" id="settings-save"><i class="ti ti-device-floppy"></i>Save Changes</button>
+        </div>
+        <div class="card anim-card" style="--d:60ms" style="margin-bottom:16px">
+          <div class="card-header"><div class="card-title"><i class="ti ti-building-hospital"></i>Hospital Information</div></div>
+          <div class="form-grid">
+            <div class="fg"><label>Hospital Name</label><input id="set-hospital" value="MediCore Hospital" /></div>
+            <div class="fg"><label>Registration No.</label><input id="set-reg" value="MH-REG-2019-041" /></div>
+            <div class="fg"><label>City</label><input id="set-city" value="Aligarh, UP" /></div>
+            <div class="fg"><label>Contact Number</label><input id="set-contact" value="+91 9876543210" /></div>
+          </div>
+        </div>
+        <div class="card anim-card" style="--d:120ms">
+          <div class="card-header"><div class="card-title"><i class="ti ti-lock"></i>Role-Based Access Control</div></div>
+          <div class="perm-head">
+            <div>Role</div>
+            <div>Patients</div><div>Billing</div><div>Reports</div><div>Admin</div>
+          </div>
+          <div id="perm-tbody">
+            <div class="perm-row"><div class="perm-role"><span class="pill p-gray">Loading…</span></div><div class="perm-cols"><div class="perm-check pch-n">·</div><div class="perm-check pch-n">·</div><div class="perm-check pch-n">·</div><div class="perm-check pch-n">·</div></div></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <i class="ti ti-circle-check-filled"></i>
+  <span id="toast-text">Welcome back!</span>
+</div>
+
+<!-- ============================= MODAL ROOT ============================= -->
+<div id="modal-root"></div>
+
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

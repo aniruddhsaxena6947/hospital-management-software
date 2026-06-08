@@ -1,0 +1,107 @@
+{
+  "name": "MediCore Hospital Management",
+  "short_name": "MediCore",
+  "description": "Complete hospital management system — patients, appointments, doctors, pharmacy, lab, wards, billing, and reports.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a2e2c",
+  "theme_color": "#0a2e2c",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["medical", "health", "productivity", "business"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "assets/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Patient",
+      "short_name": "Patient",
+      "url": "./index.html#patients",
+      "description": "Register a new patient"
+    },
+    {
+      "name": "Book Appointment",
+      "short_name": "Appt",
+      "url": "./index.html#appointments",
+      "description": "Book a new appointment"
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Stats",
+      "url": "./index.html#dashboard",
+      "description": "Open the dashboard"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "MediCore dashboard on desktop"
+    },
+    {
+      "src": "assets/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "MediCore on mobile"
+    }
+  ]
+}
