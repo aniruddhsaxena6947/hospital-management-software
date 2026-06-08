@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db = require('../db');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'medicore-dev-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'carestation-dev-secret-change-in-production';
 const JWT_EXPIRES = '8h';
 
 function signToken(user) {

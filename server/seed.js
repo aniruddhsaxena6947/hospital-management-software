@@ -1,18 +1,18 @@
 const bcrypt = require('bcryptjs');
 const db = require('./db');
 
-console.log('🌱  Seeding MediCore database…');
+console.log('🌱  Seeding CareStation database…');
 
 /* ============== USERS ============== */
 const userCount = db.prepare('SELECT COUNT(*) AS c FROM users').get().c;
 if (userCount === 0) {
-  const hash = bcrypt.hashSync('medicore123', 10);
+  const hash = bcrypt.hashSync('carestation123', 10);
   const insertUser = db.prepare(`INSERT INTO users (email, password_hash, name, role, avatar) VALUES (?, ?, ?, ?, ?)`);
-  insertUser.run('admin@medicore.health', hash, 'Admin User',    'admin',         'AD');
-  insertUser.run('doctor@medicore.health', hash, 'Dr. R. Sharma', 'doctor',        'RS');
-  insertUser.run('nurse@medicore.health',   hash, 'Meena Kumari',  'nurse',         'MK');
-  insertUser.run('accounts@medicore.health',hash, 'Pooja Shah',    'accountant',    'PS');
-  console.log('  ✓ 4 users  (admin@medicore.health / medicore123)');
+  insertUser.run('admin@carestation.health', hash, 'Admin User',    'admin',         'AD');
+  insertUser.run('doctor@carestation.health', hash, 'Dr. R. Sharma', 'doctor',        'RS');
+  insertUser.run('nurse@carestation.health',   hash, 'Meena Kumari',  'nurse',         'MK');
+  insertUser.run('accounts@carestation.health',hash, 'Pooja Shah',    'accountant',    'PS');
+  console.log('  ✓ 4 users  (admin@carestation.health / carestation123)');
 }
 
 /* ============== DOCTORS ============== */
@@ -152,7 +152,7 @@ const setCount = db.prepare('SELECT COUNT(*) AS c FROM settings').get().c;
 if (setCount === 0) {
   const ins = db.prepare(`INSERT INTO settings (key, value) VALUES (?, ?)`);
   const sets = [
-    ['hospital_name',    'MediCore Hospital'],
+    ['hospital_name',    'CareStation Hospital'],
     ['registration_no',  'MH-REG-2019-041'],
     ['city',             'Aligarh, UP'],
     ['contact',          '+91 9876543210'],

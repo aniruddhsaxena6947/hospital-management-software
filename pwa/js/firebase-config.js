@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Firebase Configuration
+   CareStation — Firebase Configuration
    ------------------------------------------------------------
    This file configures Firebase for the PWA. If no real config
    is provided, the app falls back to "demo mode" which uses
@@ -28,8 +28,8 @@ window.isFirebaseConfigured = function () {
 };
 
 window.FIREBASE_DEMO_USERS = [
-  { email: 'admin@medicore.health',    password: 'medicore123', name: 'Admin User',    role: 'admin' },
-  { email: 'doctor@medicore.health',   password: 'medicore123', name: 'Dr. A. Sharma', role: 'doctor' },
-  { email: 'nurse@medicore.health',    password: 'medicore123', name: 'Nurse Priya',   role: 'nurse' },
-  { email: 'accounts@medicore.health', password: 'medicore123', name: 'Accounts Team', role: 'accountant' }
+  { email: 'admin@carestation.health',    password: 'carestation123', name: 'Admin User',    role: 'admin' },
+  { email: 'doctor@carestation.health',   password: 'carestation123', name: 'Dr. A. Sharma', role: 'doctor' },
+  { email: 'nurse@carestation.health',    password: 'carestation123', name: 'Nurse Priya',   role: 'nurse' },
+  { email: 'accounts@carestation.health', password: 'carestation123', name: 'Accounts Team', role: 'accountant' }
 ];

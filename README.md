@@ -1,4 +1,4 @@
-# MediCore — Hospital Management System
+# CareStation — Hospital Management System
 
 A production-ready hospital management system with a polished front-end, a real Node.js + SQLite backend, JWT authentication, and full CRUD across all 12 modules.
 
@@ -6,7 +6,7 @@ A production-ready hospital management system with a polished front-end, a real 
 
 ## Quick start
 
-**macOS — just double-click** `Launch MediCore.command`
+**macOS — just double-click** `Launch CareStation.command`
 
 That's it. It will:
 1. Install backend dependencies on first run (one-time, ~30 sec)
@@ -16,10 +16,10 @@ That's it. It will:
 
 **Demo credentials** (all use the same password):
 ```
-admin@medicore.health    /  medicore123    →  Super Admin
-doctor@medicore.health   /  medicore123    →  Doctor
-nurse@medicore.health    /  medicore123    →  Nurse
-accounts@medicore.health /  medicore123    →  Accountant
+admin@carestation.health    /  carestation123    →  Super Admin
+doctor@carestation.health   /  carestation123    →  Doctor
+nurse@carestation.health    /  carestation123    →  Nurse
+accounts@carestation.health /  carestation123    →  Accountant
 ```
 
 **From a terminal:**
@@ -37,7 +37,7 @@ hospital managment /
 ├── styles.css              # Premium teal/emerald design system
 ├── api.js                  # Front-end API client
 ├── app.js                  # Front-end logic (auth, routing, modals)
-├── Launch MediCore.command # macOS one-click launcher
+├── Launch CareStation.command # macOS one-click launcher
 ├── start.sh                # Terminal launcher
 ├── README.md
 └── server/                 # Backend

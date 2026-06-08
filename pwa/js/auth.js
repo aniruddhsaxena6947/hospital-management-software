@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Auth Layer
+   CareStation — Auth Layer
    ------------------------------------------------------------
    Uses Firebase Authentication when configured, otherwise
    falls back to the local demo accounts in db.js.
@@ -8,8 +8,8 @@
 (() => {
   'use strict';
 
-  const AUTH_KEY = 'medicore.user.v1';
-  const SESSION_KEY = 'medicore.session.v1';
+  const AUTH_KEY = 'carestation.user.v1';
+  const SESSION_KEY = 'carestation.session.v1';
 
   let firebaseAuth = null;
   let currentUser = null;

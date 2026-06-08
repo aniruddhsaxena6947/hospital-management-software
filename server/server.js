@@ -60,10 +60,10 @@ if (userCount === 0) {
 app.listen(PORT, () => {
   console.log('');
   console.log('  ┌──────────────────────────────────────────┐');
-  console.log('  │   MediCore HMS  •  Server running         │');
+  console.log('  │   CareStation HMS  •  Server running         │');
   console.log(`  │   http://localhost:${PORT}                  │`);
   console.log('  └──────────────────────────────────────────┘');
   console.log('');
-  console.log('  Demo login  →  admin@medicore.health / medicore123');
+  console.log('  Demo login  →  admin@carestation.health / carestation123');
   console.log('');
 });

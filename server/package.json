@@ -1,7 +1,7 @@
 {
-  "name": "medicore-hms-backend",
+  "name": "carestation-hms-backend",
   "version": "1.0.0",
-  "description": "MediCore Hospital Management System — Node.js + Express + SQLite backend",
+  "description": "CareStation Hospital Management System — Node.js + Express + SQLite backend",
   "main": "server.js",
   "type": "commonjs",
   "scripts": {

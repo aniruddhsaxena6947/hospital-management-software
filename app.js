@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Hospital Management System
+   CareStation — Hospital Management System
    Front-end application logic (API-driven)
    ============================================================ */
 
@@ -39,7 +39,7 @@
     (async () => {
       authLoader?.classList.add('show');
       try {
-        const r = await api.auth.login('admin@medicore.health', 'medicore123');
+        const r = await api.auth.login('admin@carestation.health', 'carestation123');
         api.setToken(r.token);
         api.setUser(r.user);
         authScreen.style.display = 'none';
@@ -1069,7 +1069,7 @@
   });
 
   // Console banner
-  console.log('%cMediCore HMS%c\nHospital Management System • v1.0.0 — API ready',
+  console.log('%cCareStation HMS%c\nHospital Management System • v1.0.0 — API ready',
     'color:#0d9488;font-weight:700;font-size:14px', 'color:#64748b;font-size:11px');
   console.log('API base:', window.api?.API_BASE);
 })();

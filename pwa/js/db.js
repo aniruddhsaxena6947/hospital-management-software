@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Data Layer
+   CareStation — Data Layer
    ------------------------------------------------------------
    Unified API for patients, doctors, appointments, etc.
    Uses Firebase Firestore if configured, otherwise a
@@ -11,10 +11,10 @@
   'use strict';
 
   const COLLECTIONS = ['patients', 'doctors', 'appointments', 'emr', 'pharmacy', 'lab', 'wards', 'billing', 'staff', 'alerts'];
-  const STORE_KEY   = 'medicore.db.v1';
-  const SESSION_KEY = 'medicore.session.v1';
-  const USER_KEY    = 'medicore.user.v1';
-  const SEED_FLAG   = 'medicore.seeded.v1';
+  const STORE_KEY   = 'carestation.db.v1';
+  const SESSION_KEY = 'carestation.session.v1';
+  const USER_KEY    = 'carestation.user.v1';
+  const SEED_FLAG   = 'carestation.seeded.v1';
 
   /* ---------------- storage helpers ---------------- */
   function readStore() {
@@ -107,10 +107,10 @@
         { id: 5, invoice_no: 'INV-2026-0138', patient_id: 8, amount: 3200,  status: 'Paid',    date: '2026-06-02', items: 3 }
       ],
       staff: [
-        { id: 1, name: 'Admin User',     role: 'Super Admin', department: 'Operations', email: 'admin@medicore.health',    status: 'Active' },
-        { id: 2, name: 'Dr. R. Sharma',  role: 'Doctor',      department: 'Cardiology', email: 'doctor@medicore.health',   status: 'On Duty' },
-        { id: 3, name: 'Nurse Priya',    role: 'Nurse',       department: 'ICU',        email: 'nurse@medicore.health',    status: 'On Duty' },
-        { id: 4, name: 'Accounts Team',  role: 'Accountant',  department: 'Finance',    email: 'accounts@medicore.health', status: 'Active' }
+        { id: 1, name: 'Admin User',     role: 'Super Admin', department: 'Operations', email: 'admin@carestation.health',    status: 'Active' },
+        { id: 2, name: 'Dr. R. Sharma',  role: 'Doctor',      department: 'Cardiology', email: 'doctor@carestation.health',   status: 'On Duty' },
+        { id: 3, name: 'Nurse Priya',    role: 'Nurse',       department: 'ICU',        email: 'nurse@carestation.health',    status: 'On Duty' },
+        { id: 4, name: 'Accounts Team',  role: 'Accountant',  department: 'Finance',    email: 'accounts@carestation.health', status: 'Active' }
       ],
       alerts: [
         { id: 1, icon: 'ti-pill',                color: 'red',    title: 'Low stock — Paracetamol 500mg',  sub: 'Only 12 strips remaining',    ago: '10 min' },

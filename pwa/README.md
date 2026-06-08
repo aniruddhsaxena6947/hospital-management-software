@@ -1,4 +1,4 @@
-# MediCore HMS — Progressive Web App
+# CareStation HMS — Progressive Web App
 
 A complete, installable hospital management system that runs in any modern browser on **Android, Windows, Mac, and Linux**. Works offline, syncs through Firebase, and ships as a single static codebase.
 
@@ -35,10 +35,10 @@ Then sign in with one of the demo accounts (pre-filled):
 
 | Email | Password | Role |
 |---|---|---|
-| `admin@medicore.health` | `medicore123` | Super Admin |
-| `doctor@medicore.health` | `medicore123` | Doctor |
-| `nurse@medicore.health` | `medicore123` | Nurse |
-| `accounts@medicore.health` | `medicore123` | Accountant |
+| `admin@carestation.health` | `carestation123` | Super Admin |
+| `doctor@carestation.health` | `carestation123` | Doctor |
+| `nurse@carestation.health` | `carestation123` | Nurse |
+| `accounts@carestation.health` | `carestation123` | Accountant |
 
 All 60+ sample patients, doctors, appointments, prescriptions, lab orders, ward beds, and invoices load automatically on first run.
 
@@ -73,7 +73,7 @@ The app works fully offline in **demo mode** with localStorage. To enable real m
 ### 1. Create a Firebase project
 
 1. Go to [console.firebase.google.com](https://console.firebase.google.com)
-2. Click **Add project** → name it (e.g. `medicore-hms`)
+2. Click **Add project** → name it (e.g. `carestation-hms`)
 3. Inside the project, click the **Web** icon (`</>`) to register a web app
 4. Copy the `firebaseConfig` object
 
@@ -96,9 +96,9 @@ Open `pwa/js/firebase-config.js` and replace the placeholder values:
 ```js
 window.FIREBASE_CONFIG = {
   apiKey:            "AIza...",
-  authDomain:        "medicore-hms.firebaseapp.com",
-  projectId:         "medicore-hms",
-  storageBucket:     "medicore-hms.appspot.com",
+  authDomain:        "carestation-hms.firebaseapp.com",
+  projectId:         "carestation-hms",
+  storageBucket:     "carestation-hms.appspot.com",
   messagingSenderId: "1234567890",
   appId:             "1:1234567890:web:abc..."
 };
@@ -149,7 +149,7 @@ cd pwa
 vercel                 # follow prompts, framework = "Other"
 ```
 
-Vercel auto-detects the static site, gives you a URL like `https://medicore-xxx.vercel.app`, and provisions HTTPS.
+Vercel auto-detects the static site, gives you a URL like `https://carestation-xxx.vercel.app`, and provisions HTTPS.
 
 ### Option C — Netlify
 
@@ -176,8 +176,8 @@ Upload the entire `pwa/` folder. Done.
 ```nginx
 server {
   listen 80;
-  server_name medicore.example.com;
-  root /var/www/medicore/pwa;
+  server_name carestation.example.com;
+  root /var/www/carestation/pwa;
   index index.html;
 
   location / {
@@ -197,7 +197,7 @@ server {
 
 ```bash
 # install certbot and get a free Let's Encrypt cert
-sudo certbot --nginx -d medicore.example.com
+sudo certbot --nginx -d carestation.example.com
 ```
 
 ---

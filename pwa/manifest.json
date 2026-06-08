@@ -1,6 +1,6 @@
 {
-  "name": "MediCore Hospital Management",
-  "short_name": "MediCore",
+  "name": "CareStation Hospital Management",
+  "short_name": "CareStation",
   "description": "Complete hospital management system — patients, appointments, doctors, pharmacy, lab, wards, billing, and reports.",
   "start_url": "./index.html",
   "scope": "./",
@@ -94,14 +94,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "MediCore dashboard on desktop"
+      "label": "CareStation dashboard on desktop"
     },
     {
       "src": "assets/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "MediCore on mobile"
+      "label": "CareStation on mobile"
     }
   ]
 }

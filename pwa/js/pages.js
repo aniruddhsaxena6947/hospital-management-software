@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Page Renderers
+   CareStation — Page Renderers
    ------------------------------------------------------------
    Each page function returns the HTML for that section.
    afterRender() wires up the data binding and event handlers.
@@ -824,7 +824,7 @@
           <div class="card-header"><div class="card-title"><i class="ti ti-building-hospital"></i> Hospital</div></div>
           <form id="settings-hospital" class="modal-form inline">
             <div class="form-grid">
-              <div class="fg"><label>Hospital name</label><input name="name" value="MediCore General Hospital"></div>
+              <div class="fg"><label>Hospital name</label><input name="name" value="CareStation General Hospital"></div>
               <div class="fg"><label>Address</label><input name="address" value="123 Health Street, Bengaluru, India"></div>
               <div class="fg"><label>Contact</label><input name="contact" value="+91 80 4000 1234"></div>
               <div class="fg"><label>Total beds</label><input name="beds" type="number" value="200"></div>

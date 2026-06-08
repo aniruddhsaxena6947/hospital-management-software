@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================================
-#  MediCore HMS — one-click launcher (macOS)
+#  CareStation HMS — one-click launcher (macOS)
 #  Double-click this file to install (first time) and start the app.
 # ============================================================================
 
@@ -13,7 +13,7 @@ URL="http://localhost:${PORT}/index.html"
 # Pretty header
 echo ""
 echo "  ┌────────────────────────────────────────────┐"
-echo "  │   MediCore — Hospital Management System    │"
+echo "  │   CareStation — Hospital Management System    │"
 echo "  │   Server starting on http://localhost:$PORT │"
 echo "  └────────────────────────────────────────────┘"
 echo ""
@@ -33,14 +33,14 @@ if [ ! -d "server/node_modules" ]; then
 fi
 
 # Start the server in the background and capture its PID
-(cd server && node server.js) > /tmp/medicore.log 2>&1 &
+(cd server && node server.js) > /tmp/carestation.log 2>&1 &
 SERVER_PID=$!
-echo $SERVER_PID > /tmp/medicore.pid
+echo $SERVER_PID > /tmp/carestation.pid
 
 cleanup() {
-  if [ -f /tmp/medicore.pid ]; then
-    kill "$(cat /tmp/medicore.pid)" 2>/dev/null || true
-    rm -f /tmp/medicore.pid
+  if [ -f /tmp/carestation.pid ]; then
+    kill "$(cat /tmp/carestation.pid)" 2>/dev/null || true
+    rm -f /tmp/carestation.pid
   fi
 }
 trap cleanup EXIT INT TERM
@@ -55,12 +55,12 @@ if lsof -ti tcp:$PORT >/dev/null 2>&1; then
   echo "  ✓ Server running"
   echo ""
   echo "  → $URL"
-  echo "  → Demo login:  admin@medicore.health / medicore123"
+  echo "  → Demo login:  admin@carestation.health / carestation123"
   echo ""
   open "$URL" 2>/dev/null || open "http://localhost:$PORT"
 else
-  echo "  ✗ Server failed to start. Check /tmp/medicore.log"
-  tail -20 /tmp/medicore.log
+  echo "  ✗ Server failed to start. Check /tmp/carestation.log"
+  tail -20 /tmp/carestation.log
   read -p "  Press Enter to close…"
   exit 1
 fi

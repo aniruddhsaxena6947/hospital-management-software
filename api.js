@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore — Front-end API client
+   CareStation — Front-end API client
    ============================================================ */
 (() => {
   'use strict';
@@ -12,8 +12,8 @@
     return 'http://localhost:3000/api';
   })();
 
-  const TOKEN_KEY = 'medicore.token';
-  const USER_KEY  = 'medicore.user';
+  const TOKEN_KEY = 'carestation.token';
+  const USER_KEY  = 'carestation.user';
 
   function getToken() { return localStorage.getItem(TOKEN_KEY); }
   function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }

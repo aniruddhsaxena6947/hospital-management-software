@@ -1,12 +1,12 @@
 /* ============================================================
-   MediCore HMS — Service Worker
+   CareStation HMS — Service Worker
    Strategy:
    - App shell (HTML, CSS, JS, icons, manifest) → cache-first
    - Firebase / external CDN → network-first with cache fallback
    - Navigation requests → offline page when network fails
    ============================================================ */
 
-const CACHE_VERSION  = 'medicore-v1.0.0';
+const CACHE_VERSION  = 'carestation-v1.0.0';
 const STATIC_CACHE   = `${CACHE_VERSION}-static`;
 const RUNTIME_CACHE  = `${CACHE_VERSION}-runtime`;
 

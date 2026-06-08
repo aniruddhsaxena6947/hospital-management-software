@@ -1,5 +1,5 @@
 /* ============================================================
-   MediCore PWA — Main App
+   CareStation PWA — Main App
    ============================================================ */
 
 (() => {
@@ -68,7 +68,7 @@
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') showToast('MediCore installed');
+    if (outcome === 'accepted') showToast('CareStation installed');
     deferredPrompt = null;
     $('#install-btn').hidden = true;
   });
@@ -587,7 +587,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'medicore-patients-' + new Date().toISOString().slice(0, 10) + '.csv';
+    a.download = 'carestation-patients-' + new Date().toISOString().slice(0, 10) + '.csv';
     a.click();
     URL.revokeObjectURL(url);
     showToast('CSV exported');
@@ -794,8 +794,8 @@
         confirmLabel: 'Reset',
         danger: true,
         onConfirm: async () => {
-          localStorage.removeItem('medicore.db.v1');
-          localStorage.removeItem('medicore.seeded.v1');
+          localStorage.removeItem('carestation.db.v1');
+          localStorage.removeItem('carestation.seeded.v1');
           db.init();
           showToast('Data reset');
           router.go('dashboard');
@@ -809,7 +809,7 @@
       e.preventDefault();
       const data = formToObject(e.target);
       const u = auth.user;
-      if (u) { u.name = data.name; localStorage.setItem('medicore.user.v1', JSON.stringify(u)); paintUser(u); }
+      if (u) { u.name = data.name; localStorage.setItem('carestation.user.v1', JSON.stringify(u)); paintUser(u); }
       showToast('Profile updated');
     }
     if (e.target.id === 'settings-hospital') {
