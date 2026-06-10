@@ -44,6 +44,33 @@ router.post('/logout', verifyToken, (req, res) => {
   res.json({ ok: true });
 });
 
+/* ============== POST /api/auth/signup (public self-register) ============== */
+router.post('/signup', (req, res) => {
+  const { email, password, name } = req.body || {};
+  if (!email || !password || !name) {
+    return res.status(400).json({ error: 'email, password, name required' });
+  }
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'Password must be at least 6 characters' });
+  }
+  const exists = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase().trim());
+  if (exists) return res.status(409).json({ error: 'Email already registered' });
+
+  const hash = bcrypt.hashSync(password, 10);
+  const initials = (name.match(/\b\w/g) || []).slice(0, 2).join('').toUpperCase();
+  const info = db.prepare(
+    'INSERT INTO users (email, password_hash, name, role, avatar) VALUES (?, ?, ?, ?, ?)'
+  ).run(email.toLowerCase().trim(), hash, name, 'staff', initials);
+
+  const user = db.prepare('SELECT * FROM users WHERE id = ?').get(info.lastInsertRowid);
+  const token = signToken(user);
+  log(user.id, 'signup', 'auth', `User ${email} signed up`);
+  res.status(201).json({
+    token,
+    user: { id: user.id, email: user.email, name: user.name, role: user.role, avatar: user.avatar }
+  });
+});
+
 /* ============== POST /api/auth/register (admin-creates-user) ============== */
 router.post('/register', verifyToken, (req, res) => {
   const { email, password, name, role } = req.body || {};

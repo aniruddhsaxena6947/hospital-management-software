@@ -39,7 +39,7 @@ app.use('/api/settings',    require('./routes/settings'));
 app.use('/api/alerts',      require('./routes/alerts'));
 
 /* ============== Static front-end ============== */
-app.use(express.static(path.join(__dirname, '..')));
+app.use(express.static(path.join(__dirname, '../pwa')));
 
 /* ============== 404 for API ============== */
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found' }));

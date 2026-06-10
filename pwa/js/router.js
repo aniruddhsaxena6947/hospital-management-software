@@ -55,7 +55,7 @@
 
     const page = document.getElementById('pg-' + name);
     if (page && window.pages && typeof window.pages.afterRender === 'function') {
-      try { await window.pages.afterRender(name, page); } catch (e) { console.error(e); }
+      try { await window.pages.afterRender(name); } catch (e) { console.error(e.message); }
     }
 
     document.querySelector('.sidebar')?.classList.remove('open');

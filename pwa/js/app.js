@@ -91,20 +91,22 @@
      ============================================================ */
   const modalRoot = $('#modal-root');
   function openModal({ title, body, primaryLabel = 'Save', onSubmit, wide = false, danger = false }) {
+    const hasSubmit = primaryLabel !== null;
     modalRoot.innerHTML = `
       <div class="modal-backdrop"></div>
       <div class="modal ${wide ? 'wide' : ''}">
         <div class="modal-head">
-          <h3>${esc(title)}</h3>
+          <h3>${title}</h3>
           <button class="modal-close" aria-label="Close"><i class="ti ti-x"></i></button>
         </div>
-        <form class="modal-form" id="modal-form">
+        ${hasSubmit ? `<form class="modal-form" id="modal-form">` : `<div class="modal-form">`}
           <div class="modal-body">${body}</div>
+          ${hasSubmit ? `
           <div class="modal-foot">
             <button type="button" class="btn-out" data-cancel>Cancel</button>
             <button type="submit" class="btn-prim ${danger ? 'danger' : ''}" data-submit>${esc(primaryLabel)}</button>
-          </div>
-        </form>
+          </div>` : `<div style="padding:12px 24px 16px;text-align:right"><button type="button" class="btn-out" data-cancel>Close</button></div>`}
+        ${hasSubmit ? `</form>` : `</div>`}
       </div>`;
     modalRoot.classList.add('show');
     document.body.style.overflow = 'hidden';
@@ -114,22 +116,24 @@
     modalRoot.querySelector('.modal-close').addEventListener('click', close);
     modalRoot.querySelector('[data-cancel]').addEventListener('click', close);
 
-    const form = modalRoot.querySelector('#modal-form');
-    const submitBtn = modalRoot.querySelector('[data-submit]');
-    const handleSubmit = async (e) => {
-      if (e) e.preventDefault();
-      const data = formToObject(form);
-      submitBtn.classList.add('loading'); submitBtn.disabled = true;
-      try { await onSubmit(data); close(); }
-      catch (err) {
-        showToast(err.message || 'Save failed');
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-      }
-    };
-    form.addEventListener('submit', handleSubmit);
-    submitBtn.addEventListener('click', (e) => { e.preventDefault(); handleSubmit(); });
-    setTimeout(() => modalRoot.querySelector('input, select, textarea')?.focus(), 50);
+    if (hasSubmit) {
+      const form = modalRoot.querySelector('.modal-form');
+      const submitBtn = modalRoot.querySelector('[data-submit]');
+      const handleSubmit = async (e) => {
+        if (e) e.preventDefault();
+        const data = formToObject(form);
+        submitBtn.classList.add('loading'); submitBtn.disabled = true;
+        try { await onSubmit(data); close(); }
+        catch (err) {
+          showToast(err.message || 'Save failed');
+          submitBtn.classList.remove('loading');
+          submitBtn.disabled = false;
+        }
+      };
+      form.addEventListener('submit', handleSubmit);
+      submitBtn.addEventListener('click', (e) => { e.preventDefault(); handleSubmit(); });
+      setTimeout(() => modalRoot.querySelector('input, select, textarea')?.focus(), 50);
+    }
   }
 
   function formToObject(form) {
@@ -151,8 +155,7 @@
   /* ============================================================
      FORM TEMPLATES
      ============================================================ */
-  function patientForm(p = {}) {
-    const doctors = db.list('doctors');
+  function patientForm(p = {}, doctors = []) {
     return `
       <div class="form-grid">
         <div class="fg"><label>Full name *</label><input name="name" required value="${esc(p.name || '')}" placeholder="Ramesh Gupta"></div>
@@ -178,9 +181,7 @@
     `;
   }
 
-  function apptForm(a = {}) {
-    const patients = db.list('patients');
-    const doctors  = db.list('doctors');
+  function apptForm(a = {}, patients = [], doctors = []) {
     return `
       <div class="form-grid">
         <div class="fg"><label>Patient *</label><select name="patient_id" required>
@@ -228,9 +229,7 @@
     `;
   }
 
-  function labForm(l = {}) {
-    const patients = db.list('patients');
-    const doctors  = db.list('doctors');
+  function labForm(l = {}, patients = [], doctors = []) {
     return `
       <div class="form-grid">
         <div class="fg"><label>Patient *</label><select name="patient_id" required>
@@ -250,8 +249,7 @@
     `;
   }
 
-  function invoiceForm(b = {}) {
-    const patients = db.list('patients');
+  function invoiceForm(b = {}, patients = []) {
     return `
       <div class="form-grid">
         <div class="fg"><label>Patient *</label><select name="patient_id" required>
@@ -284,9 +282,7 @@
     `;
   }
 
-  function emrForm(r = {}) {
-    const patients = db.list('patients');
-    const doctors  = db.list('doctors').concat(db.list('staff').filter((s) => /doctor/i.test(s.role)));
+  function emrForm(r = {}, patients = [], doctors = []) {
     return `
       <div class="form-grid">
         <div class="fg"><label>Patient *</label><select name="patient_id" required>
@@ -309,39 +305,42 @@
   /* ============================================================
      CRUD HANDLERS
      ============================================================ */
-  function newPatient() {
+  async function newPatient() {
+    const doctors = await db.list('doctors');
     openModal({
       title: 'Register new patient',
-      body: patientForm(),
+      body: patientForm({}, doctors),
       onSubmit: async (data) => {
         if (data.doctor_id) data.doctor_id = parseInt(data.doctor_id, 10);
         if (data.age) data.age = parseInt(data.age, 10);
-        const code = 'P' + (1054 + db.list('patients').length);
-        db.create('patients', { ...data, code, last_visit: new Date().toISOString().slice(0, 10) });
+        const patients = await db.list('patients');
+        const code = 'P' + (1054 + patients.length);
+        await db.create('patients', { ...data, code, last_visit: new Date().toISOString().slice(0, 10) });
         showToast('Patient registered');
         await router.go('patients');
       }
     });
   }
 
-  function editPatient(id) {
-    const p = db.get('patients', id);
+  async function editPatient(id) {
+    const p = await db.get('patients', id);
     if (!p) return;
+    const doctors = await db.list('doctors');
     openModal({
       title: 'Edit patient',
-      body: patientForm(p),
+      body: patientForm(p, doctors),
       onSubmit: async (data) => {
         if (data.doctor_id) data.doctor_id = parseInt(data.doctor_id, 10);
         if (data.age) data.age = parseInt(data.age, 10);
-        db.update('patients', id, data);
+        await db.update('patients', id, data);
         showToast('Patient updated');
         await router.go('patients');
       }
     });
   }
 
-  function delPatient(id) {
-    const p = db.get('patients', id);
+  async function delPatient(id) {
+    const p = await db.get('patients', id);
     if (!p) return;
     confirmDialog({
       title: 'Delete patient?',
@@ -349,26 +348,26 @@
       confirmLabel: 'Delete',
       danger: true,
       onConfirm: async () => {
-        db.remove('patients', id);
+        await db.remove('patients', id);
         showToast('Patient deleted');
         await router.go('patients');
       }
     });
   }
 
-  function newAppt() {
+  async function newAppt() {
+    const [patients, doctors] = await Promise.all([db.list('patients'), db.list('doctors')]);
     openModal({
       title: 'Book new appointment',
-      body: apptForm(),
+      body: apptForm({}, patients, doctors),
       onSubmit: async (data) => {
         data.patient_id = parseInt(data.patient_id, 10);
         data.doctor_id  = parseInt(data.doctor_id, 10);
         if (!data.patient_id || !data.doctor_id) throw new Error('Patient and doctor are required');
-        const p = db.get('patients', data.patient_id);
-        const d = db.get('doctors',  data.doctor_id);
+        const d = await db.get('doctors',  data.doctor_id);
         data.department = d?.department || '';
         data.status = 'Scheduled';
-        db.create('appointments', data);
+        await db.create('appointments', data);
         showToast('Appointment booked');
         await router.go('appointments');
       }
@@ -382,21 +381,21 @@
       onSubmit: async (data) => {
         data.appointments = 0;
         data.load_pct = 30;
-        db.create('doctors', data);
+        await db.create('doctors', data);
         showToast('Doctor added');
         await router.go('doctors');
       }
     });
   }
 
-  function editDoctor(id) {
-    const d = db.get('doctors', id);
+  async function editDoctor(id) {
+    const d = await db.get('doctors', id);
     if (!d) return;
     openModal({
       title: 'Edit doctor',
       body: doctorForm(d),
       onSubmit: async (data) => {
-        db.update('doctors', id, data);
+        await db.update('doctors', id, data);
         showToast('Doctor updated');
         await router.go('doctors');
       }
@@ -409,7 +408,7 @@
       message: 'This will remove the doctor from your roster.',
       confirmLabel: 'Remove',
       danger: true,
-      onConfirm: async () => { db.remove('doctors', id); showToast('Doctor removed'); await router.go('doctors'); }
+      onConfirm: async () => { await db.remove('doctors', id); showToast('Doctor removed'); await router.go('doctors'); }
     });
   }
 
@@ -421,15 +420,15 @@
         data.stock = parseInt(data.stock || 0, 10);
         data.price = parseFloat(data.price || 0);
         data.status = data.stock < 20 ? 'Low Stock' : 'In Stock';
-        db.create('pharmacy', data);
+        await db.create('pharmacy', data);
         showToast('Medicine added');
         await router.go('pharmacy');
       }
     });
   }
 
-  function editMedicine(id) {
-    const m = db.get('pharmacy', id);
+  async function editMedicine(id) {
+    const m = await db.get('pharmacy', id);
     if (!m) return;
     openModal({
       title: 'Edit medicine',
@@ -438,7 +437,7 @@
         data.stock = parseInt(data.stock || 0, 10);
         data.price = parseFloat(data.price || 0);
         data.status = data.stock < 20 ? 'Low Stock' : 'In Stock';
-        db.update('pharmacy', id, data);
+        await db.update('pharmacy', id, data);
         showToast('Medicine updated');
         await router.go('pharmacy');
       }
@@ -451,38 +450,41 @@
       message: 'This will remove the medicine from your inventory.',
       confirmLabel: 'Delete',
       danger: true,
-      onConfirm: async () => { db.remove('pharmacy', id); showToast('Medicine deleted'); await router.go('pharmacy'); }
+      onConfirm: async () => { await db.remove('pharmacy', id); showToast('Medicine deleted'); await router.go('pharmacy'); }
     });
   }
 
-  function newLab() {
+  async function newLab() {
+    const [patients, doctors] = await Promise.all([db.list('patients'), db.list('doctors')]);
     openModal({
       title: 'New test order',
-      body: labForm(),
+      body: labForm({}, patients, doctors),
       onSubmit: async (data) => {
         data.patient_id = parseInt(data.patient_id, 10);
         data.ordered_by = parseInt(data.ordered_by, 10);
         if (!data.patient_id || !data.ordered_by || !data.test) throw new Error('All fields are required');
         data.ordered_at = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        db.create('lab', data);
+        await db.create('lab', data);
         showToast('Test ordered');
         await router.go('lab');
       }
     });
   }
 
-  function newInvoice() {
+  async function newInvoice() {
+    const patients = await db.list('patients');
     openModal({
       title: 'Create invoice',
-      body: invoiceForm(),
+      body: invoiceForm({}, patients),
       onSubmit: async (data) => {
         data.patient_id = parseInt(data.patient_id, 10);
         data.amount = parseFloat(data.amount || 0);
         data.items  = parseInt(data.items || 1, 10);
-        const lastInv = db.list('billing')[0];
+        const billing = await db.list('billing');
+        const lastInv = billing[0];
         const nextNum = (parseInt((lastInv?.invoice_no || 'INV-2026-0142').split('-').pop(), 10) || 142) + 1;
         data.invoice_no = 'INV-2026-' + String(nextNum).padStart(4, '0');
-        db.create('billing', data);
+        await db.create('billing', data);
         showToast('Invoice created');
         await router.go('billing');
       }
@@ -494,21 +496,21 @@
       title: 'Add staff member',
       body: staffForm(),
       onSubmit: async (data) => {
-        db.create('staff', data);
+        await db.create('staff', data);
         showToast('Staff added');
         await router.go('staff');
       }
     });
   }
 
-  function editStaff(id) {
-    const s = db.get('staff', id);
+  async function editStaff(id) {
+    const s = await db.get('staff', id);
     if (!s) return;
     openModal({
       title: 'Edit staff',
       body: staffForm(s),
       onSubmit: async (data) => {
-        db.update('staff', id, data);
+        await db.update('staff', id, data);
         showToast('Staff updated');
         await router.go('staff');
       }
@@ -521,22 +523,24 @@
       message: 'This will remove the staff member from the directory.',
       confirmLabel: 'Remove',
       danger: true,
-      onConfirm: async () => { db.remove('staff', id); showToast('Staff removed'); await router.go('staff'); }
+      onConfirm: async () => { await db.remove('staff', id); showToast('Staff removed'); await router.go('staff'); }
     });
   }
 
-  function newEMR() {
+  async function newEMR() {
+    const [patients, doctors, staff] = await Promise.all([db.list('patients'), db.list('doctors'), db.list('staff')]);
+    const emrDocs = doctors.concat(staff.filter((s) => /doctor/i.test(s.role)));
     openModal({
       title: 'New medical record',
-      body: emrForm(),
+      body: emrForm({}, patients, emrDocs),
       onSubmit: async (data) => {
         data.patient_id = parseInt(data.patient_id, 10);
         if (data.doctor_id) data.doctor_id = parseInt(data.doctor_id, 10);
         if (!data.patient_id) throw new Error('Patient is required');
-        const d = db.get('doctors', data.doctor_id) || db.get('staff', data.doctor_id);
+        const d = await db.get('doctors', data.doctor_id) || await db.get('staff', data.doctor_id);
         data.doctor_name = d?.name || '';
         data.created_at = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        db.create('emr', data);
+        await db.create('emr', data);
         showToast('Record added');
         await router.go('emr');
       }
@@ -549,7 +553,7 @@
       message: 'This medical record will be permanently deleted.',
       confirmLabel: 'Delete',
       danger: true,
-      onConfirm: async () => { db.remove('emr', id); showToast('Record deleted'); await router.go('emr'); }
+      onConfirm: async () => { await db.remove('emr', id); showToast('Record deleted'); await router.go('emr'); }
     });
   }
 
@@ -559,14 +563,14 @@
       message: 'This invoice will be permanently deleted.',
       confirmLabel: 'Delete',
       danger: true,
-      onConfirm: async () => { db.remove('billing', id); showToast('Invoice deleted'); await router.go('billing'); }
+      onConfirm: async () => { await db.remove('billing', id); showToast('Invoice deleted'); await router.go('billing'); }
     });
   }
 
-  function toggleBill(id) {
-    const b = db.get('billing', id);
+  async function toggleBill(id) {
+    const b = await db.get('billing', id);
     if (!b) return;
-    db.update('billing', id, { status: b.status === 'Paid' ? 'Pending' : 'Paid' });
+    await db.update('billing', id, { status: b.status === 'Paid' ? 'Pending' : 'Paid' });
     showToast('Invoice updated');
     router.go('billing');
   }
@@ -574,8 +578,8 @@
   /* ============================================================
      CSV EXPORT
      ============================================================ */
-  function exportCSV() {
-    const patients = db.list('patients');
+  async function exportCSV() {
+    const patients = await db.list('patients');
     if (!patients.length) { showToast('No data to export'); return; }
     const cols = ['code', 'name', 'age', 'sex', 'blood_group', 'phone', 'department', 'status', 'last_visit'];
     const rows = [cols.join(',')];
@@ -630,6 +634,10 @@
     if (e.target.id === 'bi-search')       window.pages.afterRender('billing');
     if (e.target.id === 'emr-search')      window.pages.afterRender('emr');
     if (e.target.id === 'emr-type')        window.pages.afterRender('emr');
+    if (e.target.id === 'dash-search') {
+      const q = e.target.value.trim().toLowerCase();
+      if (q) { window.__patientFilter = 'All'; window.__dashQ = q; router.go('patients'); }
+    }
   });
 
   document.addEventListener('click', (e) => {
@@ -645,14 +653,20 @@
       bf.parentElement.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('on'));
       bf.classList.add('on');
       window.__billFilter = bf.dataset.billFilter;
-      window.pages.afterRender('billing');
+      window.pages.afterRender('billing').catch(() => {});
+    }
+    if (e.target.closest('#dash-filter')) {
+      showToast('Filter panel coming soon');
+    }
+    if (e.target.closest('#topbar-settings')) {
+      router.go('settings');
     }
   });
 
-  document.addEventListener('change', (e) => {
+  document.addEventListener('change', async (e) => {
     if (e.target.matches('[data-update-appt]')) {
       const id = e.target.dataset.updateAppt;
-      db.update('appointments', id, { status: e.target.value });
+      await db.update('appointments', id, { status: e.target.value });
       showToast('Status updated');
       router.go('appointments');
     }
@@ -662,14 +676,15 @@
      GLOBAL SEARCH (⌘K)
      ============================================================ */
   const gs = $('#global-search');
-  gs?.addEventListener('input', () => {
+  gs?.addEventListener('input', async () => {
     const q = gs.value.toLowerCase().trim();
     if (!q) return;
-    const patients = db.list('patients').filter((p) => p.name.toLowerCase().includes(q));
-    if (patients.length) {
+    const patients = await db.list('patients');
+    const filtered = patients.filter((p) => p.name.toLowerCase().includes(q));
+    if (filtered.length) {
       window.__patientFilter = 'All';
       router.go('patients');
-      setTimeout(() => { const s = $('#patients-search'); if (s) { s.value = q; window.pages.afterRender('patients'); } }, 80);
+      setTimeout(async () => { const s = $('#patients-search'); if (s) { s.value = q; await window.pages.afterRender('patients'); } }, 80);
     }
   });
   window.addEventListener('keydown', (e) => {
@@ -692,6 +707,37 @@
     $('.sidebar')?.classList.remove('open');
     $('#sidebar-backdrop')?.classList.remove('show');
   });
+
+  /* ============================================================
+     NOTIFICATION BELL
+     ============================================================ */
+  async function showNotifications() {
+    try {
+      const alerts = await db.list('alerts');
+      const iconMap = { stock: 'ti ti-pill', icu: 'ti ti-heart-rate-monitor', lab: 'ti ti-flask', surgery: 'ti ti-surgery' };
+      const colorMap = { red: 'p-red', amber: 'p-amber', primary: 'p-primary', green: 'p-green' };
+      const body = alerts.length
+        ? alerts.map((a) => `
+          <div class="notif-item">
+            <div class="notif-icon ${colorMap[a.color] || 'p-blue'}"><i class="${iconMap[a.type] || 'ti ti-bell'}"></i></div>
+            <div class="notif-content">
+              <div class="notif-title">${esc(a.title)}</div>
+              <div class="notif-sub">${esc(a.sub)}</div>
+              <div class="notif-ago">${esc(a.ago)}</div>
+            </div>
+          </div>`).join('')
+        : '<div class="empty"><i class="ti ti-bell-off" style="font-size:2rem;margin-bottom:8px;display:block"></i>No notifications</div>';
+      openModal({
+        title: 'Notifications',
+        body,
+        primaryLabel: null,
+        wide: true
+      });
+    } catch (e) {
+      showToast('Could not load notifications');
+    }
+  }
+  $('.notif-btn')?.addEventListener('click', showNotifications);
 
   /* ============================================================
      LOGIN / LOGOUT
@@ -796,7 +842,7 @@
         onConfirm: async () => {
           localStorage.removeItem('carestation.db.v1');
           localStorage.removeItem('carestation.seeded.v1');
-          db.init();
+          await db.init();
           showToast('Data reset');
           router.go('dashboard');
         }

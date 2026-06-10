@@ -45,38 +45,79 @@
      ============================================================ */
   function dashboard() {
     return `
+      <div class="stat-toolbar anim-card" style="--d:0ms">
+        <div class="stat-search">
+          <i class="ti ti-search"></i>
+          <input type="search" id="dash-search" placeholder="Quick search patients…">
+        </div>
+        <button class="stat-filter-btn" id="dash-filter" title="Filter">
+          <i class="ti ti-adjustments-horizontal"></i>
+        </button>
+      </div>
       <div class="stat-grid" id="dashboard-stats">
-        <div class="scard" style="--d:0ms">
-          <div class="scard-top">
-            <div class="scard-icon ic-primary"><i class="ti ti-users"></i></div>
-            <span class="scard-badge p-green">+12 today</span>
+        <div class="tile tile-patients" style="--d:0ms">
+          <div class="tile-bg">
+            <i class="ti ti-users tile-bg-icon"></i>
           </div>
-          <div><div class="scard-val" id="d-patients">0</div><div class="scard-label">Total Patients Today</div></div>
-          <div class="scard-sub up"><i class="ti ti-trending-up"></i> 8% above avg</div>
+          <div class="tile-body">
+            <div class="tile-row">
+              <div class="tile-icon-wrap tile-icon-green">
+                <i class="ti ti-users"></i>
+              </div>
+              <span class="tile-badge" id="d-patients-badge">+12 today</span>
+            </div>
+            <div class="tile-val" id="d-patients">0</div>
+            <div class="tile-label">Total Patients Today</div>
+            <div class="tile-trend up"><i class="ti ti-trending-up"></i> <span>8% above avg</span></div>
+          </div>
         </div>
-        <div class="scard" style="--d:80ms">
-          <div class="scard-top">
-            <div class="scard-icon ic-purple"><i class="ti ti-calendar-check"></i></div>
-            <span class="scard-badge p-amber" id="d-pending-badge">— pending</span>
+        <div class="tile tile-appointments" style="--d:80ms">
+          <div class="tile-bg">
+            <i class="ti ti-calendar-check tile-bg-icon"></i>
           </div>
-          <div><div class="scard-val" id="d-appts">0</div><div class="scard-label">Appointments Today</div></div>
-          <div class="scard-sub purple"><i class="ti ti-check"></i> <span id="d-appts-done">0</span> completed</div>
+          <div class="tile-body">
+            <div class="tile-row">
+              <div class="tile-icon-wrap tile-icon-blue">
+                <i class="ti ti-calendar-check"></i>
+              </div>
+              <span class="tile-badge" id="d-pending-badge">— pending</span>
+            </div>
+            <div class="tile-val" id="d-appts">0</div>
+            <div class="tile-label">Appointments Today</div>
+            <div class="tile-trend muted"><i class="ti ti-check"></i> <span id="d-appts-done">0</span> completed</div>
+          </div>
         </div>
-        <div class="scard" style="--d:160ms">
-          <div class="scard-top">
-            <div class="scard-icon ic-green"><i class="ti ti-stethoscope"></i></div>
-            <span class="scard-badge p-green" id="d-free-badge">— free now</span>
+        <div class="tile tile-doctors" style="--d:160ms">
+          <div class="tile-bg">
+            <i class="ti ti-stethoscope tile-bg-icon"></i>
           </div>
-          <div><div class="scard-val" id="d-doctors">0</div><div class="scard-label">Doctors On Duty</div></div>
-          <div class="scard-sub muted"><i class="ti ti-clock"></i> <span id="d-surgery">0</span> in surgery</div>
+          <div class="tile-body">
+            <div class="tile-row">
+              <div class="tile-icon-wrap tile-icon-purple">
+                <i class="ti ti-stethoscope"></i>
+              </div>
+              <span class="tile-badge" id="d-free-badge">— free now</span>
+            </div>
+            <div class="tile-val" id="d-doctors">0</div>
+            <div class="tile-label">Doctors On Duty</div>
+            <div class="tile-trend muted"><i class="ti ti-clock"></i> <span id="d-surgery">0</span> in surgery</div>
+          </div>
         </div>
-        <div class="scard" style="--d:240ms">
-          <div class="scard-top">
-            <div class="scard-icon ic-amber"><i class="ti ti-currency-rupee"></i></div>
-            <span class="scard-badge p-green">+18k vs avg</span>
+        <div class="tile tile-revenue" style="--d:240ms">
+          <div class="tile-bg">
+            <i class="ti ti-currency-rupee tile-bg-icon"></i>
           </div>
-          <div><div class="scard-val" id="d-revenue">₹0</div><div class="scard-label">Revenue Today</div></div>
-          <div class="scard-sub up"><i class="ti ti-trending-up"></i> Strong day</div>
+          <div class="tile-body">
+            <div class="tile-row">
+              <div class="tile-icon-wrap tile-icon-amber">
+                <i class="ti ti-currency-rupee"></i>
+              </div>
+              <span class="tile-badge">+18k vs avg</span>
+            </div>
+            <div class="tile-val" id="d-revenue">₹0</div>
+            <div class="tile-label">Revenue Today</div>
+            <div class="tile-trend up"><i class="ti ti-trending-up"></i> Strong day</div>
+          </div>
         </div>
       </div>
 
@@ -113,18 +154,18 @@
     `;
   }
 
-  function renderDashboard() {
-    const d = db.dashboard();
+  async function renderDashboard() {
+    const d = await db.dashboard();
     document.getElementById('d-patients').textContent = d.patients_today;
     document.getElementById('d-appts').textContent    = d.appointments_today;
     document.getElementById('d-doctors').textContent  = d.doctors_on_duty;
     document.getElementById('d-revenue').textContent  = fmtINR(d.revenue_today);
 
     const pending = d.recent_appointments.filter((a) => a.status === 'Waiting' || a.status === 'Scheduled').length;
-    document.getElementById('d-pending-badge').textContent = pending + ' pending';
-    document.getElementById('d-appts-done').textContent    = d.recent_appointments.filter((a) => a.status === 'Done').length;
-    document.getElementById('d-free-badge').textContent    = Math.max(0, d.doctors_on_duty - 2) + ' free now';
-    document.getElementById('d-surgery').textContent       = 1;
+    if (document.getElementById('d-pending-badge')) document.getElementById('d-pending-badge').textContent = pending + ' pending';
+    if (document.getElementById('d-appts-done'))    document.getElementById('d-appts-done').textContent    = d.recent_appointments.filter((a) => a.status === 'Done').length;
+    if (document.getElementById('d-free-badge'))    document.getElementById('d-free-badge').textContent    = Math.max(0, d.doctors_on_duty - 2) + ' free now';
+    if (document.getElementById('d-surgery'))       document.getElementById('d-surgery').textContent       = 1;
 
     document.getElementById('d-appt-list').innerHTML = d.recent_appointments.length
       ? d.recent_appointments.map((a) => `
@@ -137,7 +178,7 @@
             </div>
             ${statusPill(a.status)}
           </div>`).join('')
-      : `<div class="empty">No appointments yet</div>`;
+      : `<div class="empty"><i class="ti ti-calendar-off" style="font-size:2rem;margin-bottom:8px;display:block"></i>No appointments yet</div>`;
 
     document.getElementById('d-alerts').innerHTML = d.alerts.map((a) => `
       <div class="alert-row">
@@ -147,7 +188,7 @@
       </div>`).join('');
     document.getElementById('d-alert-count').textContent = d.alerts.length + ' active';
 
-    const occ = db.occupancy();
+    const occ = await db.occupancy();
     document.getElementById('d-occupancy').innerHTML = occ.map((o) => {
       const color = occColor(o.pct);
       return `<tr>
@@ -194,11 +235,11 @@
     `;
   }
 
-  function renderPatients(query) {
+  async function renderPatients(query) {
     const q = query || (document.getElementById('patients-search')?.value || '');
     const status = window.__patientFilter || 'All';
-    const list = db.list('patients', { q, status });
-    const doctors = db.list('doctors');
+    const list = await db.list('patients', { q, status });
+    const doctors = await db.list('doctors');
 
     const tbody = document.getElementById('patients-tbody');
     const cards = document.getElementById('patients-cards');
@@ -221,7 +262,7 @@
       </tr>`;
     }).join('');
 
-    tbody.innerHTML = rows || `<tr><td colspan="8" class="empty">No patients — click <strong>Register Patient</strong> to add one</td></tr>`;
+    tbody.innerHTML = rows || `<tr><td colspan="8" class="empty"><i class="ti ti-users-off" style="font-size:1.5rem;margin-bottom:6px;display:block"></i>No patients — click <strong>Register Patient</strong> to add one</td></tr>`;
 
     const cardsHtml = list.map((p) => {
       const d = doctors.find((x) => x.id === p.doctor_id);
@@ -277,11 +318,11 @@
     `;
   }
 
-  function renderAppointments() {
+  async function renderAppointments() {
     const q = document.getElementById('appt-search')?.value || '';
-    const list = db.list('appointments', { q });
-    const patients = db.list('patients');
-    const doctors  = db.list('doctors');
+    const list = await db.list('appointments', { q });
+    const patients = await db.list('patients');
+    const doctors  = await db.list('doctors');
 
     const total = list.length;
     const completed = list.filter((a) => a.status === 'Done').length;
@@ -309,7 +350,7 @@
       </tr>`;
     }).join('');
 
-    document.getElementById('appt-tbody').innerHTML = html || `<tr><td colspan="6" class="empty">No appointments scheduled</td></tr>`;
+    document.getElementById('appt-tbody').innerHTML = html || `<tr><td colspan="6" class="empty"><i class="ti ti-calendar-off" style="font-size:1.5rem;margin-bottom:6px;display:block"></i>No appointments scheduled</td></tr>`;
 
     const cardsHtml = list.map((a) => {
       const p = patients.find((x) => x.id === a.patient_id);
@@ -343,8 +384,8 @@
     `;
   }
 
-  function renderDoctors() {
-    const list = db.list('doctors');
+  async function renderDoctors() {
+    const list = await db.list('doctors');
     document.getElementById('doctors-grid').innerHTML = list.map((d) => `
       <div class="doc-card" data-id="${d.id}">
         <div class="doc-av ${esc(d.avatar_color || 'primary')}">${esc(initials(d.name))}</div>
@@ -358,7 +399,7 @@
           <button class="btn-out small danger" data-del-doctor="${d.id}"><i class="ti ti-trash"></i></button>
         </div>
       </div>
-    `).join('') || `<div class="empty">No doctors yet</div>`;
+    `).join('') || `<div class="empty"><i class="ti ti-user-off" style="font-size:2rem;margin-bottom:8px;display:block"></i>No doctors yet</div>`;
   }
 
   /* ============================================================
@@ -395,21 +436,21 @@
     `;
   }
 
-  function renderEMR() {
+  async function renderEMR() {
     const q = document.getElementById('emr-search')?.value || '';
     const t = document.getElementById('emr-type')?.value || '';
-    let list = db.list('emr');
+    let list = await db.list('emr');
     if (q) {
       const like = q.toLowerCase();
       list = list.filter((r) => [r.title, r.notes, r.doctor_name].some((x) => String(x || '').toLowerCase().includes(like)));
-      const patients = db.list('patients');
+      const patients = await db.list('patients');
       const matchingPids = patients.filter((p) => [p.name, p.code].some((x) => String(x || '').toLowerCase().includes(like))).map((p) => p.id);
-      list = list.concat(db.list('emr').filter((r) => matchingPids.includes(r.patient_id)));
+      list = list.concat(await db.list('emr').filter((r) => matchingPids.includes(r.patient_id)));
       list = [...new Map(list.map((r) => [r.id, r])).values()];
     }
     if (t) list = list.filter((r) => r.type === t);
 
-    const patients = db.list('patients');
+    const patients = await db.list('patients');
     const html = list.map((r) => {
       const p = patients.find((x) => x.id === r.patient_id);
       return `<tr data-id="${r.id}">
@@ -422,7 +463,7 @@
       </tr>`;
     }).join('');
 
-    document.getElementById('emr-tbody').innerHTML = html || `<tr><td colspan="6" class="empty">No records — click <strong>New Record</strong> to add one</td></tr>`;
+    document.getElementById('emr-tbody').innerHTML = html || `<tr><td colspan="6" class="empty"><i class="ti ti-file-text" style="font-size:1.5rem;margin-bottom:6px;display:block;opacity:0.4"></i>No records — click <strong>New Record</strong> to add one</td></tr>`;
 
     const cardsHtml = list.map((r) => {
       const p = patients.find((x) => x.id === r.patient_id);
@@ -472,10 +513,10 @@
     `;
   }
 
-  function renderPharmacy() {
+  async function renderPharmacy() {
     const q = document.getElementById('ph-search')?.value || '';
-    const list = db.list('pharmacy', { q });
-    const stats = db.pharmacyStats();
+    const list = await db.list('pharmacy', { q });
+    const stats = await db.pharmacyStats();
     document.getElementById('ph-total').textContent   = stats.total;
     document.getElementById('ph-low').textContent     = stats.low;
     document.getElementById('ph-issued').textContent  = stats.issued;
@@ -495,7 +536,7 @@
         </td>
       </tr>`).join('');
 
-    document.getElementById('ph-tbody').innerHTML = html || `<tr><td colspan="7" class="empty">No medicines — click <strong>Add Medicine</strong></td></tr>`;
+    document.getElementById('ph-tbody').innerHTML = html || `<tr><td colspan="7" class="empty"><i class="ti ti-pill" style="font-size:1.5rem;margin-bottom:6px;display:block;opacity:0.4"></i>No medicines — click <strong>Add Medicine</strong></td></tr>`;
     document.getElementById('ph-cards').innerHTML = list.map((m) => `
       <div class="data-card">
         <div class="dc-head"><strong>${esc(m.name)}</strong>${statusPill(m.stock < 20 ? 'Low Stock' : 'In Stock')}</div>
@@ -529,10 +570,10 @@
     `;
   }
 
-  function renderLab() {
-    const list = db.list('lab');
-    const patients = db.list('patients');
-    const doctors  = db.list('doctors');
+  async function renderLab() {
+    const list = await db.list('lab');
+    const patients = await db.list('patients');
+    const doctors  = await db.list('doctors');
     const html = list.map((l) => {
       const p = patients.find((x) => x.id === l.patient_id);
       const d = doctors.find((x) => x.id === l.ordered_by);
@@ -547,7 +588,7 @@
       </tr>`;
     }).join('');
 
-    document.getElementById('lab-tbody').innerHTML = html || `<tr><td colspan="7" class="empty">No test orders</td></tr>`;
+    document.getElementById('lab-tbody').innerHTML = html || `<tr><td colspan="7" class="empty"><i class="ti ti-microscope" style="font-size:1.5rem;margin-bottom:6px;display:block;opacity:0.4"></i>No test orders</td></tr>`;
     document.getElementById('lab-cards').innerHTML = list.map((l) => {
       const p = patients.find((x) => x.id === l.patient_id);
       return `<div class="data-card">
@@ -587,8 +628,8 @@
     `;
   }
 
-  function renderWards() {
-    const list = db.list('wards');
+  async function renderWards() {
+    const list = await db.list('wards');
     const total = list.reduce((s, w) => s + w.total, 0);
     const occ   = list.reduce((s, w) => s + w.occupied, 0);
     const avail = total - occ;
@@ -647,12 +688,12 @@
     `;
   }
 
-  function renderBilling() {
+  async function renderBilling() {
     const q = document.getElementById('bi-search')?.value || '';
     const status = window.__billFilter || 'All';
-    const list = db.list('billing', { q, status });
-    const summary = db.billingSummary();
-    const patients = db.list('patients');
+    const list = await db.list('billing', { q, status });
+    const summary = await db.billingSummary();
+    const patients = await db.list('patients');
 
     document.getElementById('bi-total').textContent   = fmtINR(summary.total);
     document.getElementById('bi-paid').textContent    = fmtINR(summary.paid);
@@ -675,7 +716,7 @@
       </tr>`;
     }).join('');
 
-    document.getElementById('bi-tbody').innerHTML = html || `<tr><td colspan="7" class="empty">No invoices</td></tr>`;
+    document.getElementById('bi-tbody').innerHTML = html || `<tr><td colspan="7" class="empty"><i class="ti ti-receipt" style="font-size:1.5rem;margin-bottom:6px;display:block;opacity:0.4"></i>No invoices</td></tr>`;
     document.getElementById('bi-cards').innerHTML = list.map((b) => {
       const p = patients.find((x) => x.id === b.patient_id);
       return `<div class="data-card">
@@ -718,14 +759,14 @@
     `;
   }
 
-  function renderReports() {
-    const r = db.reports();
+  async function renderReports() {
+    const r = await db.reports();
     document.getElementById('r-patients').textContent = r.patients;
     document.getElementById('r-revenue').textContent  = fmtINR(r.revenue);
     document.getElementById('r-appts').textContent    = r.appointments;
     document.getElementById('r-doctors').textContent  = r.doctors;
 
-    const patients = db.list('patients');
+    const patients = await db.list('patients');
     const deptCounts = {};
     patients.forEach((p) => { deptCounts[p.department || 'Other'] = (deptCounts[p.department || 'Other'] || 0) + 1; });
     const maxDept = Math.max(...Object.values(deptCounts), 1);
@@ -736,9 +777,9 @@
         <div class="report-bar"><div class="report-fill" style="width:${pct}%"></div></div>
         <div class="report-val">${n}</div>
       </div>`;
-    }).join('') || `<div class="empty">No data</div>`;
+    }).join('') || `<div class="empty"><i class="ti ti-chart-bar" style="font-size:2rem;margin-bottom:8px;display:block;opacity:0.3"></i>No department data</div>`;
 
-    const meds = db.list('pharmacy');
+    const meds = await db.list('pharmacy');
     const low = meds.filter((m) => m.stock < 20).length;
     const ok  = meds.length - low;
     document.getElementById('r-pharmacy').innerHTML = `
@@ -772,8 +813,8 @@
     `;
   }
 
-  function renderStaff() {
-    const list = db.list('staff');
+  async function renderStaff() {
+    const list = await db.list('staff');
     const html = list.map((s) => `
       <tr>
         <td><div class="user-av small">${esc(initials(s.name))}</div><strong>${esc(s.name)}</strong></td>
@@ -853,11 +894,11 @@
     `;
   }
 
-  function renderSettings() {
+  async function renderSettings() {
     document.getElementById('settings-mode').textContent = auth.mode === 'firebase' ? 'Connected to Firebase' : 'Running in demo (local) mode';
     document.getElementById('settings-mode-badge').textContent = auth.mode === 'firebase' ? 'Cloud' : 'Demo';
     document.getElementById('settings-mode-badge').className = 'pill ' + (auth.mode === 'firebase' ? 'p-green' : 'p-amber');
-    document.getElementById('settings-count').textContent = db.list('patients').length;
+    document.getElementById('settings-count').textContent = await db.list('patients').length;
   }
 
   /* ============================================================
